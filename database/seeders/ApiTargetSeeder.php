@@ -20,6 +20,7 @@ class ApiTargetSeeder extends Seeder
             ['name' => 'App'],
             ['name' => 'Zone-Controller'],
             ['name' => 'Admin-Panel'],
+            ['name' => 'Swagger'],
         ];
         foreach ($items as $item) {
             Apitarget::create($item);

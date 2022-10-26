@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apitarget;
+use App\Models\Apitoken;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 
 /**
@@ -37,29 +39,43 @@ class ApitargetController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'targets_viewAny')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = Apitarget::orderBy('id','ASC')->get();
         if(count($data) == 0){
             return response('Ingen API Targets', 404);
         }
-        return $data;
+
+        return response()->json($data);
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function deleted()
+    public function deleted(Request $request)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'targets_viewAny_deleted')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = Apitarget::onlyTrashed()->orderBy('id','ASC')->get();
         if(count($data) == 0){
             return response('Ingen Slettede API Targets', 404);
         }
-        return $data;
+
+        return response()->json($data);
     }
 
     /**
@@ -70,26 +86,42 @@ class ApitargetController extends Controller
      */
     public function store(Request $request)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'targets_create')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = (new Apitarget());
-        $data->name = $request->name;
+
+        if(isset($request->name)){
+            $data->name = $request->name;
+        }
+
         $data->save();
 
-        return response('API Token oprettet med id: '.$data->id , 202);
+        return response('API Target oprettet med id: '.$data->id , 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'targets_view')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = Apitarget::where('id','=',$id)->first();
         if(!$data){
             return response('API Target ikke fundet', 404);
         }
 
-        return $data;
+        return response()->json($data);
     }
 
     /**
@@ -100,13 +132,24 @@ class ApitargetController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'targets_edit')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = Apitarget::where('id','=',$id)->first();
         if(!$data){
-            return response('API Token ikke fundet', 404);
+            return response('API Target ikke fundet', 404);
         }
-        $data->name = $request->name;
+
+        if(isset($request->name)){
+            $data->name = $request->name;
+        }
+
         $data->save();
-        return response('API Token opdateret', 200);
+
+        return response('API Target opdateret', 200);
     }
 
     /**
@@ -114,14 +157,22 @@ class ApitargetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'targets_delete')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = Apitarget::where('id','=',$id)->first();
         if(!$data){
-            return response('API Token ikke fundet', 404);
+            return response('API Target ikke fundet', 404);
         }
+
         $data->delete();
-        return response('API Token slettet', 204);
+
+        return response('API Target slettet', 204);
     }
 
     /**
@@ -129,14 +180,22 @@ class ApitargetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function delete_force($id)
+    public function delete_force(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'targets_delete_force')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = Apitarget::onlyTrashed()->where('id','=',$id)->first();
         if(!$data){
-            return response('API Token ikke fundet', 404);
+            return response('API Target ikke fundet', 404);
         }
+
         $data->forceDelete();
-        return response('API Token permanent slettet', 204);
+
+        return response('API Target permanent slettet', 204);
     }
 
     /**
@@ -144,14 +203,22 @@ class ApitargetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function restore($id)
+    public function restore(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'targets_restore')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = Apitarget::withTrashed()->where('id','=',$id)->first();
         if(!$data){
-            return response('API Token ikke fundet', 404);
+            return response('API Target ikke fundet', 404);
         }
+
         $data->restore();
-        return response('API Token genoprettet', 204);
+
+        return response('API Target genoprettet', 200);
     }
 
 }

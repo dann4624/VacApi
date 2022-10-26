@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Corona Mecca API",
-        "description": "Corona Mecca API.",
+        "title": "CoronaMecca API",
+        "description": "CoronaMecca API.",
         "contact": {
             "email": "dann4624@edu.sde.dk"
         },

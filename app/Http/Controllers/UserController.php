@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Apitarget;
 use App\Models\Apitoken;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,29 +14,43 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_viewAny')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = User::orderBy('id','ASC')->get();
         if(count($data) == 0){
             return response('Ingen Brugere', 404);
         }
-        return $data;
+
+        return response()->json($data);
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function deleted()
+    public function deleted(Request $request)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_viewAny_deleted')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = User::onlyTrashed()->orderBy('id','ASC')->get();
         if(count($data) == 0){
             return response('Ingen Slettede Brugere', 404);
         }
-        return $data;
+
+        return response()->json($data);
     }
 
     /**
@@ -46,29 +61,56 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_create')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = (new User());
-        $data->name = $request->name;
-        $data->email = $request->email;
-        $data->password = hash('sha512',$request->name);
-        $data->role_id = $request->role_id;
+
+
+        if(isset($request->name)){
+            $data->name = $request->name;
+        }
+
+        if(isset($request->email)){
+            $data->email = $request->email;
+        }
+
+        if(isset($request->password)){
+            $data->password = hash('sha512',$request->password);
+        }
+
+        if(isset($request->role_id)){
+            $data->role_id = $request->role_id;
+        }
+
+
         $data->save();
 
-        return response('Bruger oprettet med id: '.$data->id , 202);
+        return response('Bruger oprettet med id: '.$data->id , 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_view')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = User::where('id','=',$id)->first();
         if(!$data){
             return response('Bruger ikke fundet', 404);
         }
 
-        return $data;
+        return response()->json($data);
     }
 
     /**
@@ -79,6 +121,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_edit')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = User::where('id','=',$id)->first();
         if(!$data){
             return response('Bruger ikke fundet', 404);
@@ -87,16 +135,21 @@ class UserController extends Controller
         if(isset($request->name)){
             $data->name = $request->name;
         }
+
         if(isset($request->email)){
             $data->email = $request->email;
         }
+
         if(isset($request->password)){
             $data->password = hash('sha512',$request->password);
         }
+
         if(isset($request->role_id)){
             $data->role_id = $request->role_id;
         }
+
         $data->save();
+
         return response('Bruger opdateret', 200);
     }
 
@@ -105,13 +158,21 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_delete')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = User::where('id','=',$id)->first();
         if(!$data){
             return response('Bruger ikke fundet', 404);
         }
+
         $data->delete();
+
         return response('Bruger slettet', 204);
     }
 
@@ -120,13 +181,21 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function delete_force($id)
+    public function delete_force(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_delete_force')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = User::onlyTrashed()->where('id','=',$id)->first();
         if(!$data){
             return response('Bruger ikke fundet', 404);
         }
+
         $data->forceDelete();
+
         return response('Bruger permanent slettet', 204);
     }
 
@@ -135,21 +204,28 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function restore($id)
+    public function restore(Request $request, $id)
     {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_restore')))
+        {
+            return response('Du har ikke de fornødne tilladelser', 403);
+        }
+
         $data = User::withTrashed()->where('id','=',$id)->first();
         if(!$data){
             return response('Bruger ikke fundet', 404);
         }
+
         $data->restore();
 
-        return response('Bruger genoprettet', 204);
+        return response('Bruger genoprettet', 200);
     }
 
     /**
      * Authenticate the user from the App.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function authenticate_app(Request $request)
     {
@@ -158,7 +234,7 @@ class UserController extends Controller
 
         $user = User::where('email',"=",$email)
             ->where('password',"=",$password)
-            ->first();
+            ->first()
         ;
 
         if(!$user){
@@ -174,13 +250,13 @@ class UserController extends Controller
         $data->add($user);
         $data->add($token);
 
-        return $data;
+        return response()->json($data);
     }
 
     /**
      * Authenticate the user from the Admin Panel.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function authenticate_panel(Request $request)
     {
@@ -189,7 +265,7 @@ class UserController extends Controller
 
         $user = User::where('email',"=",$email)
             ->where('password',"=",$password)
-            ->first();
+            ->first()
         ;
 
         if(!$user){
@@ -207,6 +283,6 @@ class UserController extends Controller
         $data->add($user);
         $data->add($token);
 
-        return $data;
+        return response()->json($data);
     }
 }

@@ -10,9 +10,9 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(
- *     description="Corona Mecca API.",
+ *     description="CoronaMecca API.",
  *     version="1.0.0",
- *     title="Corona Mecca API",
+ *     title="CoronaMecca API",
  *     @OA\Contact(
  *         email="dann4624@edu.sde.dk"
  *     ),

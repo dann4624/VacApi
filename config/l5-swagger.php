@@ -5,14 +5,14 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'Corona Mecca Api',
+                'title' => 'CoronaMecca Api',
             ],
 
             'routes' => [
                 /*
                  * Route for accessing api documentation interface
                 */
-                'api' => 'api/dokumentation',
+                'api' => 'api/documentation',
             ],
             'paths' => [
                 /*
@@ -50,7 +50,7 @@ return [
             /*
              * Route for accessing parsed swagger annotations.
             */
-            'docs' => 'api/dokumentation',
+            'docs' => 'api/documentation',
 
             /*
              * Route for Oauth2 authentication callback.
