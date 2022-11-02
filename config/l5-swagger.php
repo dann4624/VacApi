@@ -245,6 +245,7 @@ return [
          * Default is the order returned by the server unchanged.
         */
         'operations_sort' => env('L5_SWAGGER_OPERATIONS_SORT', null),
+        'tags_sort' => 'alpha',
 
         /*
          * Pass the validatorUrl parameter to SwaggerUi init on the JS side.

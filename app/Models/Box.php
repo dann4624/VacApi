@@ -12,8 +12,19 @@ class Box extends Model
 
     protected $fillable = [
         "name",
-        "shelf_id",
+        "position_id",
         "type_id"
+    ];
+
+    protected $appends = [
+        'type',
+        'position',
+        'logs'
+    ];
+
+    protected $hidden = [
+        'type_id',
+        'position_id'
     ];
 
     protected $casts = [
@@ -23,9 +34,9 @@ class Box extends Model
         'expires_at' => 'datetime:d-m-Y H:i:s',
     ];
 
-    public function shelf()
+    public function position()
     {
-        return $this->belongsTo(Shelf::class);
+        return $this->belongsTo(Position::class);
     }
 
     public function type()
@@ -36,5 +47,20 @@ class Box extends Model
     public function logs()
     {
         return $this->hasMany(BoxLog::class);
+    }
+
+    public function gettypeAttribute()
+    {
+        return $this->type()->first();
+    }
+
+    public function getpositionAttribute()
+    {
+        return $this->position()->first()->makeHidden('box');
+    }
+
+    public function getlogsAttribute()
+    {
+        return $this->logs()->get()->makeHidden('box');
     }
 }

@@ -16,8 +16,12 @@ use Illuminate\Routing\Controller as BaseController;
  *     @OA\Contact(
  *         email="dann4624@edu.sde.dk"
  *     ),
+ *
  * )
- * @OA\PathItem(path="/api")
+ *   @OA\Server(
+ *         url="http://vacapi/api"
+ *     )
+ * @OA\PathItem(path="/api/")
  * @OA\SecurityScheme(
  *      securityScheme="bearerAuth",
  *      type="http",

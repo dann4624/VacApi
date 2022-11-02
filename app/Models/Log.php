@@ -16,9 +16,39 @@ class Log extends Model
         "data",
     ];
 
+    protected $hidden = [
+        "user_id",
+        "log_action_id",
+    ];
+
+    protected $appends = [
+        "user",
+        "log_action",
+    ];
+
     protected $casts = [
         'created_at' => 'datetime:d-m-Y H:i:s',
         'updated_at' => 'datetime:d-m-Y H:i:s',
         'deleted_at' => 'datetime:d-m-Y H:i:s',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function action()
+    {
+        return $this->belongsTo(LogAction::class,'log_action_id');
+    }
+
+    public function getlogactionAttribute()
+    {
+        return $this->action()->first();
+    }
+
+    public function getuserAttribute()
+    {
+        return $this->user()->first();
+    }
 }

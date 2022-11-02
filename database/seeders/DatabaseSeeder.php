@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             ApiTokenSeeder::class,
             UserSeeder::class,
             LogactionSeeder::class,
+            TypeSeeder::class,
+            ZoneSeeder::class,
         ]);
     }
 }

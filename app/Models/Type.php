@@ -12,6 +12,9 @@ class Type extends Model
 
     protected $fillable = [
         "name",
+        "shelf_life",
+        "minimum_temperature",
+        "maximum_temperature",
     ];
 
     protected $casts = [

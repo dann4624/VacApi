@@ -9,6 +9,353 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * /**
+ * @OA\get(
+ *      path="/users",
+ *      summary="Get a list of Users",
+ *      description="Get a list of Users",
+ *      operationId="UsersList",
+ *      tags={"Users"},
+ *      security={{"bearerAuth":{}}},
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="List of Users"
+ *   ),
+ * )
+ *
+ * * @OA\get(
+ *      path="/users/deleted",
+ *      summary="Get a list of deleted Users",
+ *      description="Get a list of deleted Users",
+ *      operationId="UsersListDeleted",
+ *      tags={"Users"},
+ *      security={{"bearerAuth":{}}},
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="List of deleted Users"
+ *   ),
+ * )
+ *
+ * @OA\post(
+ *      path="/users",
+ *      summary="Create an User",
+ *      description="Create an User",
+ *      operationId="UsersCreate",
+ *      tags={"Users"},
+ *      security={{"bearerAuth":{}}},
+ *
+ *      @OA\Parameter(
+ *              name="name",
+ *              description="Name of the User",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 example="User Name"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *      @OA\Parameter(
+ *              name="email",
+ *              description="Email",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 format="email",
+ *                 minimum=5,
+ *                 example="dann4624@edu.sde.dk"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *     @OA\Parameter(
+ *              name="password",
+ *              description="Password",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 format="password",
+ *                 minimum=5,
+ *                 example="Pass.1234"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *     @OA\Parameter(
+ *              name="role_id",
+ *              description="ID of the Role",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="User created"
+ *   ),
+ * )
+ *
+ * @OA\get(
+ *      path="/users/{id}",
+ *      summary="Get a specific User",
+ *      description="Get a specific User",
+ *      operationId="UsersShow",
+ *      tags={"Users"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the User",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example="1"
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="User object"
+ *   ),
+ * )
+ *
+ * @OA\put(
+ *      path="/users/{id}",
+ *      summary="Update an User",
+ *      description="Update an User",
+ *      operationId="UsersUpdate",
+ *      tags={"Users"},
+ *      security={{"bearerAuth":{}}},
+ *
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the User",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                 minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *      @OA\Parameter(
+ *              name="name",
+ *              description="Name of the User",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 example="User Name"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *      @OA\Parameter(
+ *              name="email",
+ *              description="Email",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 format="email",
+ *                 minimum=5,
+ *                 example="dann4624@edu.sde.dk"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *     @OA\Parameter(
+ *              name="password",
+ *              description="Password",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 format="password",
+ *                 minimum=5,
+ *                 example="Pass.1234"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *     @OA\Parameter(
+ *              name="role_id",
+ *              description="ID of the Role",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+
+ *   @OA\Response(
+ *      response=200,
+ *      description="User updated"
+ *   ),
+ * )
+ *
+ * @OA\delete(
+ *      path="/users/{id}",
+ *      summary="Delete an User",
+ *      description="Delete an User",
+ *      operationId="UsersDelete",
+ *      tags={"Users"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the User",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example="1"
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=204,
+ *      description="User deleted"
+ *   ),
+ * )
+ *
+ *
+ * @OA\delete(
+ *      path="/users/{id}/force",
+ *      summary="Permanently delete an User",
+ *      description="Permanently delete an User",
+ *      operationId="UsersDeleteForce",
+ *      tags={"Users"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the User",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example="1"
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=204,
+ *      description="User permanently deleted"
+ *   ),
+ * )
+ *
+ * *
+ * @OA\put(
+ *      path="/users/{id}/restore",
+ *      summary="Restore a deleted User",
+ *      description="Restore a deleted User",
+ *      operationId="UsersRestore",
+ *      tags={"Users"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the User",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example="1"
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="User restored"
+ *   ),
+ * )
+ *
+ * @OA\Post(
+ *      path="/authenticate/app",
+ *      summary="Get API Key for App by authenticating with a valid user",
+ *      description="Get API Key for App by authenticating with a valid user",
+ *      operationId="AuthenticateApp",
+ *      tags={"Authentication"},
+ *      @OA\Parameter(
+ *              name="email",
+ *              description="email",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 format="email",
+ *                 minimum=5,
+ *                 example="dann4624@edu.sde.dk"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="password",
+ *              description="password",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 format="password",
+ *                 minimum=5,
+ *                 example="Pass.1234"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *   @OA\Response(
+ *      response=200,
+ *      description="API Token Opdateret"
+ *   ),
+ *  @OA\Response(
+ *      response=404,
+ *      description="Bruger ikke fundet"
+ *   )
+ * )
+ *
+ * @OA\Post(
+ *      path="/authenticate/panel",
+ *      summary="Get API Key for Admin Panel by authenticating with a valid user",
+ *      description="Get API Key for Admin Panel by authenticating with a valid user",
+ *      operationId="AuthenticatePanel",
+ *      tags={"Authentication"},
+ *      @OA\Parameter(
+ *              name="email",
+ *              description="Email",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 format="email",
+ *                 minimum=5,
+ *                 example="dann4624@edu.sde.dk"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="password",
+ *              description="Password",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 format="password",
+ *                 minimum=5,
+ *                 example="Pass.1234"
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *   @OA\Response(
+ *      response=200,
+ *      description="User Authenticated"
+ *   ),
+ *  @OA\Response(
+ *      response=404,
+ *      description="User Not Found"
+ *   )
+ * )
+ */
+
 class UserController extends Controller
 {
     /**
@@ -21,15 +368,15 @@ class UserController extends Controller
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_viewAny')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = User::orderBy('id','ASC')->get();
         if(count($data) == 0){
-            return response('Ingen Brugere', 404);
+            return response()->json(['besked' => 'Ingen Brugere'], 404);
         }
 
-        return response()->json($data);
+        return response()->json($data,200);
     }
 
     /**
@@ -42,29 +389,29 @@ class UserController extends Controller
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_viewAny_deleted')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = User::onlyTrashed()->orderBy('id','ASC')->get();
         if(count($data) == 0){
-            return response('Ingen Slettede Brugere', 404);
+            return response()->json(['besked' => 'Ingen Slettede Brugere'], 404);
         }
 
-        return response()->json($data);
+        return response()->json($data,200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_create')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = (new User());
@@ -89,7 +436,7 @@ class UserController extends Controller
 
         $data->save();
 
-        return response('Bruger oprettet med id: '.$data->id , 201);
+        response()->json(['besked' => 'Bruger oprettet med id: '.$data->id], 201);
     }
 
     /**
@@ -102,34 +449,34 @@ class UserController extends Controller
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_view')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = User::where('id','=',$id)->first();
         if(!$data){
-            return response('Bruger ikke fundet', 404);
+            return response()->json(['besked' => 'Bruger ikke fundet'], 404);
         }
 
-        return response()->json($data);
+        return response()->json($data,200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_edit')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = User::where('id','=',$id)->first();
         if(!$data){
-            return response('Bruger ikke fundet', 404);
+            return response()->json(['besked' => 'Bruger ikke fundet'], 404);
         }
 
         if(isset($request->name)){
@@ -150,76 +497,76 @@ class UserController extends Controller
 
         $data->save();
 
-        return response('Bruger opdateret', 200);
+        response()->json(['besked' => 'Bruger opdateret'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_delete')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = User::where('id','=',$id)->first();
         if(!$data){
-            return response('Bruger ikke fundet', 404);
+            return response()->json(['besked' => 'Bruger ikke fundet'], 404);
         }
 
         $data->delete();
 
-        return response('Bruger slettet', 204);
+        response()->json(['besked' => 'Bruger slettet'],204);
     }
 
     /**
      * Permanently Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function delete_force(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_delete_force')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = User::onlyTrashed()->where('id','=',$id)->first();
         if(!$data){
-            return response('Bruger ikke fundet', 404);
+            return response()->json(['besked' => 'Bruger ikke fundet'], 404);
         }
 
         $data->forceDelete();
 
-        return response('Bruger permanent slettet', 204);
+        response()->json(['besked' => 'Bruger permanent slettet'],204);
     }
 
     /**
      * Restore the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function restore(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'users_restore')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = User::withTrashed()->where('id','=',$id)->first();
         if(!$data){
-            return response('Bruger ikke fundet', 404);
+            return response()->json(['besked' => 'Bruger ikke fundet'], 404);
         }
 
         $data->restore();
 
-        return response('Bruger genoprettet', 200);
+        response()->json(['besked' => 'Bruger genoprettet'], 200);
     }
 
     /**
@@ -238,7 +585,7 @@ class UserController extends Controller
         ;
 
         if(!$user){
-            return response('Bruger ikke fundet', 404);
+            return response()->json(['besked' => 'Bruger ikke fundet'], 404);
         }
 
         $token = Apitoken::where('target_id','=',Apitarget::where('name','=',"App")->first()->id)
@@ -250,7 +597,7 @@ class UserController extends Controller
         $data->add($user);
         $data->add($token);
 
-        return response()->json($data);
+        return response()->json($data,200);
     }
 
     /**
@@ -269,7 +616,7 @@ class UserController extends Controller
         ;
 
         if(!$user){
-            return response('Bruger ikke fundet', 404);
+            return response()->json(['besked' => 'Bruger ikke fundet'], 404);
         }
 
         $token = Apitoken::where('target_id','=',Apitarget::where('name','=',"Admin-Panel")->first()->id)
@@ -283,6 +630,6 @@ class UserController extends Controller
         $data->add($user);
         $data->add($token);
 
-        return response()->json($data);
+        return response()->json($data,200);
     }
 }

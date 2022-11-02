@@ -8,8 +8,8 @@ use App\Http\Controllers\BoxLogController;
 use App\Http\Controllers\LogActionController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoneController;
@@ -45,6 +45,14 @@ Route::post('/authenticate/app', [UserController::class, 'authenticate_app']);
 Route::post('/authenticate/panel', [UserController::class, 'authenticate_panel']);
 Route::post('/authenticate/zone', [ZoneController::class, 'authenticate']);
 
+/*
+ * Mail Views
+ */
+Route::get('/zones/{id}/notify/{type?}/{temperature?}/{humidity?}/{message?}', [ZoneController::class, 'notify_view']);
+
+/*
+ * The Protected Endpoints
+ */
 Route::group(['middleware' => 'api_token'], function() {
     /*
      * Log Actions
@@ -56,7 +64,7 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/logActions/{id}', [LogActionController::class, 'show']);
     Route::delete('/logActions/{id}', [LogActionController::class, 'destroy']);
     Route::delete('/logActions/{id}/force', [LogActionController::class, 'delete_force']);
-    Route::get('/logActions/{id}/restore', [LogActionController::class, 'restore']);
+    Route::put('/logActions/{id}/restore', [LogActionController::class, 'restore']);
 
     /*
      * API Target Endpoints
@@ -68,19 +76,13 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/targets/{id}', [ApitargetController::class, 'show']);
     Route::delete('/targets/{id}', [ApitargetController::class, 'destroy']);
     Route::delete('/targets/{id}/force', [ApitargetController::class, 'delete_force']);
-    Route::get('/targets/{id}/restore', [ApitargetController::class, 'restore']);
+    Route::put('/targets/{id}/restore', [ApitargetController::class, 'restore']);
 
     /*
      * Permissions
      */
     Route::get('/permissions', [PermissionController::class, 'index']);
-    Route::get('/permissions/deleted', [PermissionController::class, 'deleted']);
-    Route::post('/permissions', [PermissionController::class, 'store']);
-    Route::put('/permissions/{id}', [PermissionController::class, 'update']);
     Route::get('/permissions/{id}', [PermissionController::class, 'show']);
-    Route::delete('/permissions/{id}', [PermissionController::class, 'destroy']);
-    Route::delete('/permissions/{id}/force', [PermissionController::class, 'delete_force']);
-    Route::get('/permissions/{id}/restore', [PermissionController::class, 'restore']);
 
     /*
      * Roles
@@ -93,7 +95,7 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/roles/{id}', [RoleController::class, 'show']);
     Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
     Route::delete('/roles/{id}/force', [RoleController::class, 'delete_force']);
-    Route::get('/roles/{id}/restore', [RoleController::class, 'restore']);
+    Route::put('/roles/{id}/restore', [RoleController::class, 'restore']);
 
     /*
      * API Token Endpoints
@@ -101,12 +103,11 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/tokens', [ApitokenController::class, 'index']);
     Route::get('/tokens/deleted', [ApitokenController::class, 'deleted']);
     Route::post('/tokens', [ApitokenController::class, 'store']);
-    Route::post('/tokens/new', [ApitokenController::class, 'new_token']);
     Route::put('/tokens/{id}', [ApitokenController::class, 'update']);
     Route::get('/tokens/{id}', [ApitokenController::class, 'show']);
     Route::delete('/tokens/{id}', [ApitokenController::class, 'destroy']);
     Route::delete('/tokens/{id}/force', [ApitokenController::class, 'delete_force']);
-    Route::get('/tokens/{id}/restore', [ApitokenController::class, 'restore']);
+    Route::put('/tokens/{id}/restore', [ApitokenController::class, 'restore']);
 
     /*
      * Users
@@ -118,7 +119,7 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/users/{id}', [UserController::class, 'show']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::delete('/users/{id}/force', [UserController::class, 'delete_force']);
-    Route::get('/users/{id}/restore', [UserController::class, 'restore']);
+    Route::put('/users/{id}/restore', [UserController::class, 'restore']);
 
     /*
      * User Logs
@@ -130,43 +131,7 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/logs/{id}', [LogController::class, 'show']);
     Route::delete('/logs/{id}', [LogController::class, 'destroy']);
     Route::delete('/logs/{id}/force', [LogController::class, 'delete_force']);
-    Route::get('/logs/{id}/restore', [LogController::class, 'restore']);
-
-    /*
-     * Zones
-     */
-    Route::get('/zones', [ZoneController::class, 'index']);
-    Route::get('/zones/deleted', [ZoneController::class, 'deleted']);
-    Route::post('/zones', [ZoneController::class, 'store']);
-    Route::put('/zones/{id}', [ZoneController::class, 'update']);
-    Route::get('/zones/{id}', [ZoneController::class, 'show']);
-    Route::delete('/zones/{id}', [ZoneController::class, 'destroy']);
-    Route::delete('/zones/{id}/force', [ZoneController::class, 'delete_force']);
-    Route::get('/zones/{id}/restore', [ZoneController::class, 'restore']);
-
-    /*
-     * Zone Logs
-     */
-    Route::get('/zoneLogs', [ZoneLogController::class, 'index']);
-    Route::get('/zoneLogs/deleted', [ZoneLogController::class, 'deleted']);
-    Route::post('/zoneLogs', [ZoneLogController::class, 'store']);
-    Route::put('/zoneLogs/{id}', [ZoneLogController::class, 'update']);
-    Route::get('/zoneLogs/{id}', [ZoneLogController::class, 'show']);
-    Route::delete('/zoneLogs/{id}', [ZoneLogController::class, 'destroy']);
-    Route::delete('/zoneLogs/{id}/force', [ZoneLogController::class, 'delete_force']);
-    Route::get('/zoneLogs/{id}/restore', [ZoneLogController::class, 'restore']);
-
-    /*
-     * Shelves
-     */
-    Route::get('/shelves', [ShelfController::class, 'index']);
-    Route::get('/shelves/deleted', [ShelfController::class, 'deleted']);
-    Route::post('/shelves', [ShelfController::class, 'store']);
-    Route::put('/shelves/{id}', [ShelfController::class, 'update']);
-    Route::get('/shelves/{id}', [ShelfController::class, 'show']);
-    Route::delete('/shelves/{id}', [ShelfController::class, 'destroy']);
-    Route::delete('/shelves/{id}/force', [ShelfController::class, 'delete_force']);
-    Route::get('/shelves/{id}/restore', [ShelfController::class, 'restore']);
+    Route::put('/logs/{id}/restore', [LogController::class, 'restore']);
 
     /*
      * Types
@@ -178,7 +143,45 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/types/{id}', [TypeController::class, 'show']);
     Route::delete('/types/{id}', [TypeController::class, 'destroy']);
     Route::delete('/types/{id}/force', [TypeController::class, 'delete_force']);
-    Route::get('/types/{id}/restore', [TypeController::class, 'restore']);
+    Route::put('/types/{id}/restore', [TypeController::class, 'restore']);
+
+    /*
+     * Zones
+     */
+    Route::get('/zones', [ZoneController::class, 'index']);
+    Route::get('/zones/deleted', [ZoneController::class, 'deleted']);
+    Route::post('/zones', [ZoneController::class, 'store']);
+    Route::put('/zones/{id}', [ZoneController::class, 'update']);
+    Route::get('/zones/{id}', [ZoneController::class, 'show']);
+    Route::post('/zones/{id}/notify', [ZoneController::class, 'notify']);
+    Route::delete('/zones/{id}', [ZoneController::class, 'destroy']);
+    Route::delete('/zones/{id}/force', [ZoneController::class, 'delete_force']);
+    Route::put('/zones/{id}/restore', [ZoneController::class, 'restore']);
+
+    /*
+     * Zone Logs
+     */
+    Route::get('/zoneLogs', [ZoneLogController::class, 'index']);
+    Route::get('/zoneLogs/deleted', [ZoneLogController::class, 'deleted']);
+    Route::post('/zoneLogs', [ZoneLogController::class, 'store']);
+    Route::get('/zoneLogs/zone/{id}', [ZoneLogController::class, 'zone']);
+    Route::put('/zoneLogs/{id}', [ZoneLogController::class, 'update']);
+    Route::get('/zoneLogs/{id}', [ZoneLogController::class, 'show']);
+    Route::delete('/zoneLogs/{id}', [ZoneLogController::class, 'destroy']);
+    Route::delete('/zoneLogs/{id}/force', [ZoneLogController::class, 'delete_force']);
+    Route::put('/zoneLogs/{id}/restore', [ZoneLogController::class, 'restore']);
+
+    /*
+     * Positions
+     */
+    Route::get('/positions', [PositionController::class, 'index']);
+    Route::get('/positions/deleted', [PositionController::class, 'deleted']);
+    Route::post('/positions', [PositionController::class, 'store']);
+    Route::put('/positions/{id}', [PositionController::class, 'update']);
+    Route::get('/positions/{id}', [PositionController::class, 'show']);
+    Route::delete('/positions/{id}', [PositionController::class, 'destroy']);
+    Route::delete('/positions/{id}/force', [PositionController::class, 'delete_force']);
+    Route::put('/positions/{id}/restore', [PositionController::class, 'restore']);
 
     /*
      * Boxes
@@ -191,7 +194,7 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/boxes/{id}/logs', [BoxController::class, 'logs']);
     Route::delete('/boxes/{id}', [BoxController::class, 'destroy']);
     Route::delete('/boxes/{id}/force', [BoxController::class, 'delete_force']);
-    Route::get('/boxes/{id}/restore', [BoxController::class, 'restore']);
+    Route::put('/boxes/{id}/restore', [BoxController::class, 'restore']);
 
     /*
      * Box Logs
@@ -203,6 +206,6 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/boxLogs/{id}', [BoxLogController::class, 'show']);
     Route::delete('/boxLogs/{id}', [BoxLogController::class, 'destroy']);
     Route::delete('/boxLogs/{id}/force', [BoxLogController::class, 'delete_force']);
-    Route::get('/boxLogs/{id}/restore', [BoxLogController::class, 'restore']);
+    Route::put('/boxLogs/{id}/restore', [BoxLogController::class, 'restore']);
 
 });

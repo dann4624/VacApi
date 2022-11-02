@@ -13,20 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('zone_logs', function (Blueprint $table) {
+        Schema::create('types', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('zone_id')
-                ->constrained()
-                ->onDelete('cascade');
-
-            $table->foreignId('log_action')
-                ->constrained()
-                ->onDelete('cascade');
-
-            $table->string('temperature');
-            $table->string('humidity');
-            $table->boolean('alarm');
+            $table->string('name')->nullable();
+            $table->unsignedBigInteger('shelf_life');
+            $table->decimal('minimum_temperature', 5, 1);
+            $table->decimal('maximum_temperature', 5, 1);
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
@@ -41,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zone_logs');
+        Schema::dropIfExists('types');
     }
 };

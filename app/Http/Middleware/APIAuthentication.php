@@ -30,7 +30,7 @@ class APIAuthentication
 
         // Ellers sendes en 403 Unauthenticated response
         return response([
-            'message' => 'Unauthenticated'
+            'besked' => 'Unauthenticated'
         ], 403);
     }
 }

@@ -20,7 +20,7 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
 
-            $table->foreignId('log_action')
+            $table->foreignId('log_action_id')
                 ->constrained()
                 ->onDelete('cascade');
 

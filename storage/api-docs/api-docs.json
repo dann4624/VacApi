@@ -8,65 +8,3810 @@
         },
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "https://vacapi.semeicardia.online/api"
+        }
+    ],
     "paths": {
-        "/api": {},
-        "/login": {
-            "post": {
+        "/api/": {},
+        "/targets": {
+            "get": {
                 "tags": [
-                    "auth"
+                    "API - Targets"
                 ],
-                "summary": "Sign in",
-                "description": "Login by email, password",
-                "operationId": "authLogin",
-                "requestBody": {
-                    "description": "Pass user credentials",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
-                                    },
-                                    "persistent": {
-                                        "type": "boolean",
-                                        "example": "true"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
+                "summary": "Get a list of API Targets",
+                "description": "Get a list of API Targets",
+                "operationId": "TargetsList",
+                "responses": {
+                    "200": {
+                        "description": "List of API Targets"
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "API - Targets"
+                ],
+                "summary": "Create an API Target",
+                "description": "Create an API Target",
+                "operationId": "TargetsCreate",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Target Name"
+                        }
+                    }
+                ],
                 "responses": {
-                    "422": {
-                        "description": "Wrong credentials response",
+                    "200": {
+                        "description": "API Target created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/targets/deleted": {
+            "get": {
+                "tags": [
+                    "API - Targets"
+                ],
+                "summary": "Get a list of deleted API Targets",
+                "description": "Get a list of deleted API Targets",
+                "operationId": "TargetsListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted API Targets"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/targets/{id}": {
+            "get": {
+                "tags": [
+                    "API - Targets"
+                ],
+                "summary": "Get a specific API Target",
+                "description": "Get a specific API Target",
+                "operationId": "TargetsShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API Target object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "API - Targets"
+                ],
+                "summary": "Update an API Target",
+                "description": "Update an API Target",
+                "operationId": "TargetsUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Target Name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API Target updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "API - Targets"
+                ],
+                "summary": "Delete an API Target",
+                "description": "Delete an API Target",
+                "operationId": "TargetsDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "API Target deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/targets/{id}/force": {
+            "delete": {
+                "tags": [
+                    "API - Targets"
+                ],
+                "summary": "Permanently delete an API Target",
+                "description": "Permanently delete an API Target",
+                "operationId": "TargetsDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "API Target permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/targets/{id}/restore": {
+            "put": {
+                "tags": [
+                    "API - Targets"
+                ],
+                "summary": "Restore a deleted API Target",
+                "description": "Restore a deleted API Target",
+                "operationId": "TargetsRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API Target restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/tokens": {
+            "get": {
+                "tags": [
+                    "API - Tokens"
+                ],
+                "summary": "Get a list of API Tokens",
+                "description": "Get a list of API Tokens",
+                "operationId": "TokensList",
+                "responses": {
+                    "200": {
+                        "description": "success",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "token": {
                                             "type": "string",
-                                            "example": "Sorry, wrong email address or password. Please try again"
+                                            "example": "Bedste API Token"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "datetime",
+                                            "example": "31-03-2022 02:28:47"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "datetime",
+                                            "example": "31-03-2022 03:15:46"
                                         }
                                     },
                                     "type": "object"
-                                }
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "token": "Bedste API Token",
+                                        "created_at": "31-03-2022 02:28:47",
+                                        "updated_at": "31-03-2022 03:15:46"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "token": "Bedste API Token",
+                                        "created_at": "31-03-2022 02:28:47",
+                                        "updated_at": "31-03-2022 03:15:46"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ingen API Token"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "API - Tokens"
+                ],
+                "summary": "Create a API Token",
+                "description": "Create a API Token",
+                "operationId": "TokensCreate",
+                "parameters": [
+                    {
+                        "name": "target_id",
+                        "in": "query",
+                        "description": "ID of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "API Token created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/tokens/deleted": {
+            "get": {
+                "tags": [
+                    "API - Tokens"
+                ],
+                "summary": "Get a list of deleted  API Tokens",
+                "description": "Get a list of deleted  API Tokens",
+                "operationId": "TokensListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "Bedste API Token"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "datetime",
+                                            "example": "31-03-2022 02:28:47"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "datetime",
+                                            "example": "31-03-2022 03:15:46"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "token": "Bedste API Token",
+                                        "created_at": "31-03-2022 02:28:47",
+                                        "updated_at": "31-03-2022 03:15:46"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "token": "Bedste API Token",
+                                        "created_at": "31-03-2022 02:28:47",
+                                        "updated_at": "31-03-2022 03:15:46"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ingen API Token"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/tokens/{id}": {
+            "get": {
+                "tags": [
+                    "API - Tokens"
+                ],
+                "summary": "Get a specific  API Token",
+                "description": "Get a specific  API Token",
+                "operationId": "TokensShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "API Token ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "Bedste API Token"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "datetime",
+                                            "example": "31-03-2022 02:28:47"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "datetime",
+                                            "example": "31-03-2022 03:15:46"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "token": "Bedste API Token",
+                                        "created_at": "31-03-2022 02:28:47",
+                                        "updated_at": "31-03-2022 03:15:46"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ingen API Token"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "API - Tokens"
+                ],
+                "summary": "Update an API Token",
+                "description": "",
+                "operationId": "TokensUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "API Token ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "target_id",
+                        "in": "query",
+                        "description": "ID of the API Target",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API Token updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "API - Tokens"
+                ],
+                "summary": "Delete an API Token",
+                "description": "Delete an API Token",
+                "operationId": "TokensDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "API Token ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "API Token deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/tokens/{id}/force": {
+            "delete": {
+                "tags": [
+                    "API - Tokens"
+                ],
+                "summary": "Permanently delete an API Tokens",
+                "description": "Permanently delete an API Tokens",
+                "operationId": "TokensDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the API Token",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "API Token Permanently Deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/tokens/{id}/restore": {
+            "put": {
+                "tags": [
+                    "API - Tokens"
+                ],
+                "summary": "Restore a deleted API Token",
+                "description": "Restore a deleted API Token",
+                "operationId": "tokensRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the API Token",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API Token restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxes": {
+            "get": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Get a list of Boxes",
+                "description": "Get a list of Boxes",
+                "operationId": "BoxesList",
+                "responses": {
+                    "200": {
+                        "description": "List of Boxes"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Create an box",
+                "description": "Create an box",
+                "operationId": "BoxesCreate",
+                "parameters": [
+                    {
+                        "name": "position_id",
+                        "in": "query",
+                        "description": "id of the position",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "type_id",
+                        "in": "query",
+                        "description": "id of the type",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the box",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Box Name"
+                        }
+                    },
+                    {
+                        "name": "batch",
+                        "in": "query",
+                        "description": "Batch of the box",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "batch string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box Created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxes/deleted": {
+            "get": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Get a list of deleted Boxes",
+                "description": "Get a list of deleted Boxes",
+                "operationId": "BoxesListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Boxes"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxes/{id}": {
+            "get": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Get a specific a Box",
+                "description": "Get a specific Box",
+                "operationId": "BoxesShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Update a Box",
+                "description": "Update a Box",
+                "operationId": "BoxesUpdate",
+                "parameters": [
+                    {
+                        "name": "position_id",
+                        "in": "query",
+                        "description": "id of the Position",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "type_id",
+                        "in": "query",
+                        "description": "id of the Type",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Box Name"
+                        }
+                    },
+                    {
+                        "name": "batch",
+                        "in": "query",
+                        "description": "Batch of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Batch string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Delete a Box",
+                "description": "Delete a Box",
+                "operationId": "BoxesDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Box deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxes/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Permanently delete a Box",
+                "description": "Permanently delete a Box",
+                "operationId": "BoxesDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Box permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxes/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Restore a deleted box",
+                "description": "Restore a deleted box",
+                "operationId": "BoxesRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxLogs": {
+            "get": {
+                "tags": [
+                    "Box Logs"
+                ],
+                "summary": "Get a list of Box Logs",
+                "description": "Get a list of Box Logs",
+                "operationId": "BoxLogsList",
+                "responses": {
+                    "200": {
+                        "description": "List of Box Logs"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Box Logs"
+                ],
+                "summary": "Create a Box Log",
+                "description": "Create a Box Log",
+                "operationId": "BoxLogsCreate",
+                "parameters": [
+                    {
+                        "name": "log_action_id",
+                        "in": "query",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "box_id",
+                        "in": "query",
+                        "description": "ID of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "zone_id",
+                        "in": "query",
+                        "description": "ID of the Zone",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "position_id",
+                        "in": "query",
+                        "description": "ID of the Position",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box Log created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxLogs/deleted": {
+            "get": {
+                "tags": [
+                    "Box Logs"
+                ],
+                "summary": "Get a list of deleted box logs",
+                "description": "Get a list of deleted box logs",
+                "operationId": "BoxLogsListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Box Logs"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxLogs/{id}": {
+            "get": {
+                "tags": [
+                    "Box Logs"
+                ],
+                "summary": "Update a Box Log",
+                "description": "Update a Box Log",
+                "operationId": "BoxLogsShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box Log object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Box Logs"
+                ],
+                "summary": "Update a Box Log",
+                "description": "Update a Box Log",
+                "operationId": "BoxLogsUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "log_action_id",
+                        "in": "query",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "box_id",
+                        "in": "query",
+                        "description": "ID of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "zone_id",
+                        "in": "query",
+                        "description": "ID of the Zone",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "position_id",
+                        "in": "query",
+                        "description": "ID of the Position",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box Log updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Box Logs"
+                ],
+                "summary": "Delete a Box Log",
+                "description": "Delete a Box Log",
+                "operationId": "BoxLogsDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Box Log deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxLogs/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Box Logs"
+                ],
+                "summary": "Permanently delete a Box Log",
+                "description": "Permanently delete a Box Log",
+                "operationId": "BoxLogsDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Box Log permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxLogs/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Box Logs"
+                ],
+                "summary": "Restore a deleted Box Log",
+                "description": "Restore a deleted Box Log",
+                "operationId": "BoxLogsRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Box Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box Log restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logActions": {
+            "get": {
+                "tags": [
+                    "Log Actions"
+                ],
+                "summary": "Get a list of Log Actions",
+                "description": "Get a list of Log Actions",
+                "operationId": "LogActionsList",
+                "responses": {
+                    "200": {
+                        "description": "List of Log Actions"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Log Actions"
+                ],
+                "summary": "Create a Log Action",
+                "description": "Create a Log Action",
+                "operationId": "LogActionsCreate",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Log Action Name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Log Action created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logActions/deleted": {
+            "get": {
+                "tags": [
+                    "Log Actions"
+                ],
+                "summary": "Get a list of deleted Log Actions",
+                "description": "Get a list of deleted Log Actions",
+                "operationId": "LogActionsListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Log Actions"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logActions/{id}": {
+            "get": {
+                "tags": [
+                    "Log Actions"
+                ],
+                "summary": "Get a specific Log Action",
+                "description": "Get a specific Log Action",
+                "operationId": "LogActionsShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Log Action object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Log Actions"
+                ],
+                "summary": "Update an Log Action",
+                "description": "Update an Log Action",
+                "operationId": "LogActionsUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Log Action Name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Log Action updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Log Actions"
+                ],
+                "summary": "Delete an Log Action",
+                "description": "Delete an Log Action",
+                "operationId": "LogActionsDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Log Action deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logActions/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Log Actions"
+                ],
+                "summary": "Permanently Delete an Log Action",
+                "description": "Permanently Delete an Log Action",
+                "operationId": "LogActionsDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Log Action permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logActions/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Log Actions"
+                ],
+                "summary": "Restore a deleted Log Action",
+                "description": "Restore a deleted Log Action",
+                "operationId": "LogActionsRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Log Action restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logs": {
+            "get": {
+                "tags": [
+                    "User Logs"
+                ],
+                "summary": "Get a list of User Logs",
+                "description": "Get a list of User Logs",
+                "operationId": "LogsList",
+                "responses": {
+                    "200": {
+                        "description": "List of User Logs"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User Logs"
+                ],
+                "summary": "Create an User Log",
+                "description": "Create an User Log",
+                "operationId": "LogsCreate",
+                "parameters": [
+                    {
+                        "name": "log_action_id",
+                        "in": "query",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "Data",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Data"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Log created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logs/deleted": {
+            "get": {
+                "tags": [
+                    "User Logs"
+                ],
+                "summary": "Get a list of deleted User Logs",
+                "description": "Get a list of deleted User Logs",
+                "operationId": "LogsListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted User Logs"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logs/{id}": {
+            "get": {
+                "tags": [
+                    "User Logs"
+                ],
+                "summary": "Get a specific User Log",
+                "description": "Get a specific User Log",
+                "operationId": "LogsShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Log object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "User Logs"
+                ],
+                "summary": "Update an User Log",
+                "description": "Update an User Log",
+                "operationId": "LogsUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "log_action_id",
+                        "in": "query",
+                        "description": "ID of the Log Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "Data",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Data"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Log updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "User Logs"
+                ],
+                "summary": "Delete an User Log",
+                "description": "Delete an User Log",
+                "operationId": "LogsDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User Log deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logs/{id}/force": {
+            "delete": {
+                "tags": [
+                    "User Logs"
+                ],
+                "summary": "Permanently delete an User Log",
+                "description": "Permanently delete an User Log",
+                "operationId": "LogsDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User Log permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/logs/{id}/restore": {
+            "put": {
+                "tags": [
+                    "User Logs"
+                ],
+                "summary": "Restore a deleted User Log",
+                "description": "Restore a deleted User Log",
+                "operationId": "LogsRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Log restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/permissions": {
+            "get": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Get a list of permissions",
+                "description": "Get a list of permissions",
+                "operationId": "PermissionsList",
+                "responses": {
+                    "200": {
+                        "description": "List of Permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/permissions/{id}": {
+            "get": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Get a specific  an permission",
+                "description": "Get a specific permission",
+                "operationId": "PermissionsShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the permission",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permission object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/positions": {
+            "get": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Get a list of Positions",
+                "description": "Get a list of Positions",
+                "operationId": "PositionsList",
+                "responses": {
+                    "200": {
+                        "description": "List of Positions"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Create a position",
+                "description": "Create a position",
+                "operationId": "PositionsCreate",
+                "parameters": [
+                    {
+                        "name": "zone_id",
+                        "in": "query",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Position",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "position Name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API position Created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/positions/deleted": {
+            "get": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Get a list of deleted Positions",
+                "description": "Get a list of deleted Positions",
+                "operationId": "PositionsListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Positions"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/positions/{id}": {
+            "get": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Get a specific position",
+                "description": "Get a specific position",
+                "operationId": "PositionsShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Position",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Position object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Update a Position",
+                "description": "Update a Position",
+                "operationId": "PositionsUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Position",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "zone_id",
+                        "in": "query",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Position",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "position Name"
+                        }
+                    },
+                    {
+                        "name": "box_id",
+                        "in": "query",
+                        "description": "ID of the Box",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Position updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Delete a Position",
+                "description": "Delete a Position",
+                "operationId": "PositionsDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Position",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "API position deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/positions/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Permanently delete a Position",
+                "description": "Permanently delete a Position",
+                "operationId": "PositionsDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Position",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Position permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/positions/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Restore a deleted Position",
+                "description": "Restore a deleted Position",
+                "operationId": "PositionsRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Position",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Position restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get a list of Roles",
+                "description": "Get a list of Roles",
+                "operationId": "RolesList",
+                "responses": {
+                    "200": {
+                        "description": "List of Roles"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Create a Role",
+                "description": "Create a Role",
+                "operationId": "RolesCreate",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Role Name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role Created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/roles/deleted": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get a list of deleted Roles",
+                "description": "Get a list of deleted Roles",
+                "operationId": "RolesListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Roles"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get a specific  a Role",
+                "description": "Get a specific Role",
+                "operationId": "RolesShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role Object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Update a Role",
+                "description": "Update a Role",
+                "operationId": "RolesUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Role Name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Delete a Role",
+                "description": "Delete a Role",
+                "operationId": "RolesDelete",
+                "parameters": [
+                    {
+                        "name": "ID",
+                        "in": "path",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Role deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/roles/{id}/permissions": {
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Update a Role's permissions",
+                "description": "Update a Role's permissions",
+                "operationId": "RolesUpdatePermissions",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "permissions[]",
+                        "in": "query",
+                        "description": "Array of Permission IDs",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
                             }
                         }
                     }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permissions updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/roles/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Permanently delete a Role",
+                "description": "Permanently delete a Role",
+                "operationId": "RolesDeleteForce",
+                "parameters": [
+                    {
+                        "name": "ID",
+                        "in": "path",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Role permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/roles/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Restore a deleted Role",
+                "description": "Restore a deleted Role",
+                "operationId": "RolesRestore",
+                "parameters": [
+                    {
+                        "name": "ID",
+                        "in": "path",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/types": {
+            "get": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Get a list of Types",
+                "description": "Get a list of Types",
+                "operationId": "TypesList",
+                "responses": {
+                    "200": {
+                        "description": "List of Types"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Create a Type",
+                "description": "Create a Type",
+                "operationId": "TypesCreate",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Type",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Type Name"
+                        }
+                    },
+                    {
+                        "name": "shelf_life",
+                        "in": "query",
+                        "description": "Shelf Life",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "120"
+                        }
+                    },
+                    {
+                        "name": "minimum_temperature",
+                        "in": "query",
+                        "description": "Minimum Temperature",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "-60"
+                        }
+                    },
+                    {
+                        "name": "maximum_temperature",
+                        "in": "query",
+                        "description": "Maximum Temperature",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "-10"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Type Created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/types/deleted": {
+            "get": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Get a list of deleted Types",
+                "description": "Get a list of deleted Types",
+                "operationId": "TypesListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Types"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/types/{id}": {
+            "get": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Get a specific Type",
+                "description": "Get a specific Type",
+                "operationId": "TypesShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Type",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Type Object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Update a Type",
+                "description": "Update a Type",
+                "operationId": "TypesUpdate",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Type",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Type Name"
+                        }
+                    },
+                    {
+                        "name": "shelf_life",
+                        "in": "query",
+                        "description": "Shelf Life",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "120"
+                        }
+                    },
+                    {
+                        "name": "minimum_temperature",
+                        "in": "query",
+                        "description": "Minimum Temperature",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "-60"
+                        }
+                    },
+                    {
+                        "name": "maximum_temperature",
+                        "in": "query",
+                        "description": "Maximum Temperature",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "-10"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Type updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Delete a Type",
+                "description": "Delete a Type",
+                "operationId": "TypesDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Type",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Type deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/types/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Permanently delete a Type",
+                "description": "Permanently delete a Type",
+                "operationId": "TypesDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Type",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Type permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/types/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Types"
+                ],
+                "summary": "Restore a deleted Type",
+                "description": "Restore a deleted Type",
+                "operationId": "TypesRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Type",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Type restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a list of Users",
+                "description": "Get a list of Users",
+                "operationId": "UsersList",
+                "responses": {
+                    "200": {
+                        "description": "List of Users"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create an User",
+                "description": "Create an User",
+                "operationId": "UsersCreate",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "User Name"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "minimum": 5,
+                            "example": "dann4624@edu.sde.dk"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "password",
+                            "minimum": 5,
+                            "example": "Pass.1234"
+                        }
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/deleted": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a list of deleted Users",
+                "description": "Get a list of deleted Users",
+                "operationId": "UsersListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Users"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a specific User",
+                "description": "Get a specific User",
+                "operationId": "UsersShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update an User",
+                "description": "Update an User",
+                "operationId": "UsersUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "User Name"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "minimum": 5,
+                            "example": "dann4624@edu.sde.dk"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "password",
+                            "minimum": 5,
+                            "example": "Pass.1234"
+                        }
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "ID of the Role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete an User",
+                "description": "Delete an User",
+                "operationId": "UsersDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Permanently delete an User",
+                "description": "Permanently delete an User",
+                "operationId": "UsersDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Restore a deleted User",
+                "description": "Restore a deleted User",
+                "operationId": "UsersRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/authenticate/app": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get API Key for App by authenticating with a valid user",
+                "description": "Get API Key for App by authenticating with a valid user",
+                "operationId": "AuthenticateApp",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "minimum": 5,
+                            "example": "dann4624@edu.sde.dk"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "password",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "password",
+                            "minimum": 5,
+                            "example": "Pass.1234"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API Token Opdateret"
+                    },
+                    "404": {
+                        "description": "Bruger ikke fundet"
+                    }
                 }
+            }
+        },
+        "/authenticate/panel": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get API Key for Admin Panel by authenticating with a valid user",
+                "description": "Get API Key for Admin Panel by authenticating with a valid user",
+                "operationId": "AuthenticatePanel",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "minimum": 5,
+                            "example": "dann4624@edu.sde.dk"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "password",
+                            "minimum": 5,
+                            "example": "Pass.1234"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Authenticated"
+                    },
+                    "404": {
+                        "description": "User Not Found"
+                    }
+                }
+            }
+        },
+        "/zones": {
+            "get": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Get a list of Zones",
+                "description": "Get a list of Zones",
+                "operationId": "ZonesList",
+                "responses": {
+                    "200": {
+                        "description": "List of Zones"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Create an Zone",
+                "description": "Create a Zone",
+                "operationId": "ZonesCreate",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Zone Name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zones/deleted": {
+            "get": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Get a list of deleted Zones",
+                "description": "Get a list of deleted Zones",
+                "operationId": "ZonesListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Zones"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zones/{id}": {
+            "get": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Get a specific Zone",
+                "description": "Get a specific Zone",
+                "operationId": "ZonesShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Update an Zone",
+                "description": "Update an Zone",
+                "operationId": "ZonesUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Zone Name"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Delete a Zone",
+                "description": "Delete a Zone",
+                "operationId": "ZonesDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Zone deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zones/{id}/notify": {
+            "post": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Email all 'Lager Chefer' with an error message",
+                "description": "Email all 'Lager Chefer' with an error message",
+                "operationId": "ZonesNotify",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type af Notifikation",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Motion"
+                        }
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "description": "Optional Message",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Motion"
+                        }
+                    },
+                    {
+                        "name": "temperature",
+                        "in": "query",
+                        "description": "Temperature",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": "2.2"
+                        }
+                    },
+                    {
+                        "name": "humidity",
+                        "in": "query",
+                        "description": "Humidity",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": "50"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lager Chefer Notified"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zones/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Permanently Delete a Zone",
+                "description": "Permanently Delete a Zone",
+                "operationId": "ZonesDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Zone permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zones/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Zones"
+                ],
+                "summary": "Restore a deleted Zone",
+                "description": "Restore a deleted Zone",
+                "operationId": "ZonesRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/authenticate/zone": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get API Key for Zone-controller by authenticating with a valid user",
+                "description": "Get API Key for Zone-controller by authenticating with a valid user",
+                "operationId": "AuthenticateZone",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "minimum": 5,
+                            "example": "dann4624@edu.sde.dk"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "password",
+                            "minimum": 5,
+                            "example": "Pass.1234"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API Token and User sent"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zoneLogs": {
+            "get": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Get a list of Zone Logs",
+                "description": "Get a list of Zone Logs",
+                "operationId": "ZoneLogsList",
+                "responses": {
+                    "200": {
+                        "description": "List of Zone Logs"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Create an Zone Log",
+                "description": "Create an Zone Log",
+                "operationId": "ZoneLogsCreate",
+                "parameters": [
+                    {
+                        "name": "zone_id",
+                        "in": "query",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "log_action_id",
+                        "in": "query",
+                        "description": "ID of the Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "temperature",
+                        "in": "query",
+                        "description": "Temperature",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "14.2"
+                        }
+                    },
+                    {
+                        "name": "humidity",
+                        "in": "query",
+                        "description": "Humidity",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "60"
+                        }
+                    },
+                    {
+                        "name": "alarm",
+                        "in": "query",
+                        "description": "Alarm Triggered",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 1,
+                            "minimum": 0,
+                            "example": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone Log created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zoneLogs/deleted": {
+            "get": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Get a list of deleted Zone Logs",
+                "description": "Get a list of deleted Zone Logs",
+                "operationId": "ZoneLogsListDeleted",
+                "responses": {
+                    "200": {
+                        "description": "List of deleted Zone Logs"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zoneLogs/zone/{id}": {
+            "get": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Get a specific Zone's logs",
+                "description": "Get a specific Zone's logs",
+                "operationId": "ZoneLogsZone",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone Log object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zoneLogs/{id}": {
+            "get": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Get a specific Zone Log",
+                "description": "Get a specific Zone Log",
+                "operationId": "ZoneLogsShow",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone Log object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Update an Zone Log",
+                "description": "Update an Zone Log",
+                "operationId": "ZoneLogsUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "zone_id",
+                        "in": "query",
+                        "description": "ID of the Zone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "log_action_id",
+                        "in": "query",
+                        "description": "ID of the Action",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "temperature",
+                        "in": "query",
+                        "description": "Temperature",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "14.2"
+                        }
+                    },
+                    {
+                        "name": "humidity",
+                        "in": "query",
+                        "description": "Humidity",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "60"
+                        }
+                    },
+                    {
+                        "name": "alarm",
+                        "in": "query",
+                        "description": "Alarm Triggered",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 1,
+                            "minimum": 0,
+                            "example": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone Log updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Delete an Zone Log",
+                "description": "Delete an Zone Log",
+                "operationId": "ZoneLogsDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Zone Log deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zoneLogs/{id}/force": {
+            "delete": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Permanently Delete an Zone Log",
+                "description": "Permanently Delete an Zone Log",
+                "operationId": "ZoneLogsDeleteForce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Zone Log permanently deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/zoneLogs/{id}/restore": {
+            "put": {
+                "tags": [
+                    "Zone Logs"
+                ],
+                "summary": "Restore a deleted Zone Log",
+                "description": "Restore a deleted Zone Log",
+                "operationId": "ZoneLogsRestore",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Zone Log",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone Log restored"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

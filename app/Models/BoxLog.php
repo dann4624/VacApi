@@ -13,7 +13,25 @@ class BoxLog extends Model
     protected $fillable = [
         "box_id",
         "log_action_id",
-        "data",
+        "zone_id",
+        "position_id",
+        "user_id",
+    ];
+
+    protected $hidden = [
+        "log_action_id",
+        "box_id",
+        "user_id",
+        "zone_id",
+        "position_id",
+    ];
+
+    protected $appends = [
+        "log_action",
+        "box",
+        "user",
+        "zone",
+        "position",
     ];
 
     protected $casts = [
@@ -32,4 +50,43 @@ class BoxLog extends Model
         return $this->belongsTo(Box::class);
     }
 
+    public function action()
+    {
+        return $this->belongsTo(LogAction::class,'log_action_id');
+    }
+
+    public function zone()
+    {
+        return $this->belongsTo(Zone::class);
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
+
+    public function getlogactionAttribute()
+    {
+        return $this->action()->first();
+    }
+
+    public function getuserAttribute()
+    {
+        return $this->user()->first();
+    }
+
+    public function getboxAttribute()
+    {
+        return $this->box()->first()->makeHidden('logs');
+    }
+
+    public function getzoneAttribute()
+    {
+        return $this->zone()->first();
+    }
+
+    public function getpositionAttribute()
+    {
+        return $this->position()->first();
+    }
 }

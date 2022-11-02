@@ -22,6 +22,11 @@ class Apitoken extends Model
         'role_id'
     ];
 
+    protected $appends = [
+        'target',
+        'role'
+    ];
+
     protected $casts = [
         'created_at' => 'datetime:d-m-Y H:i:s',
         'updated_at' => 'datetime:d-m-Y H:i:s',
@@ -37,5 +42,15 @@ class Apitoken extends Model
     public function target()
     {
         return $this->belongsTo(Apitarget::class);
+    }
+
+    public function gettargetAttribute()
+    {
+        return $this->target()->first();
+    }
+
+    public function getroleAttribute()
+    {
+        return $this->role()->first();
     }
 }

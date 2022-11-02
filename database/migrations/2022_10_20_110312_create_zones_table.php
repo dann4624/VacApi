@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('zones', function (Blueprint $table) {
             $table->id();
+
             $table->string('name');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Type;
-use App\Models\Zone;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ZoneSeeder extends Seeder
+class PositionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -22,11 +20,7 @@ class ZoneSeeder extends Seeder
             ['name' => 'Zone 3'],
         ];
         foreach ($items as $item) {
-            Zone::create($item);
+            Position::create($item);
         }
-
-        Zone::where('name', '=', 'Zone 1')->first()->types()->sync(Type::where('name','=','Moderna')->first());
-        Zone::where('name', '=', 'Zone 2')->first()->types()->sync(Type::where('name','=','Phizer')->first());
-        Zone::where('name', '=', 'Zone 3')->first()->types()->sync(Type::all());
     }
 }

@@ -3,114 +3,88 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apitoken;
-use App\Models\Box;
 use App\Models\Permission;
 use App\Models\Position;
-use App\Models\Type;
 use Illuminate\Http\Request;
 
 /**
  * @OA\get(
- *      path="/boxes",
- *      summary="Get a list of Boxes",
- *      description="Get a list of Boxes",
- *      operationId="BoxesList",
- *      tags={"Boxes"},
+ *      path="/positions",
+ *      summary="Get a list of Positions",
+ *      description="Get a list of Positions",
+ *      operationId="PositionsList",
+ *      tags={"Positions"},
  *      security={{"bearerAuth":{}}},
  *
  *   @OA\Response(
  *      response=200,
- *      description="List of Boxes"
+ *      description="List of Positions"
  *   ),
  * )
  *
  * * @OA\get(
- *      path="/boxes/deleted",
- *      summary="Get a list of deleted Boxes",
- *      description="Get a list of deleted Boxes",
- *      operationId="BoxesListDeleted",
- *      tags={"Boxes"},
+ *      path="/positions/deleted",
+ *      summary="Get a list of deleted Positions",
+ *      description="Get a list of deleted Positions",
+ *      operationId="PositionsListDeleted",
+ *      tags={"Positions"},
  *      security={{"bearerAuth":{}}},
  *
  *   @OA\Response(
  *      response=200,
- *      description="List of deleted Boxes"
+ *      description="List of deleted Positions"
  *   ),
  * )
  *
  * @OA\post(
- *      path="/boxes",
- *      summary="Create an box",
- *      description="Create an box",
- *      operationId="BoxesCreate",
- *      tags={"Boxes"},
+ *      path="/positions",
+ *      summary="Create a position",
+ *      description="Create a position",
+ *      operationId="PositionsCreate",
+ *      tags={"Positions"},
  *      security={{"bearerAuth":{}}},
- *
  *      @OA\Parameter(
- *              name="position_id",
- *              description="id of the position",
+ *              name="zone_id",
+ *              description="ID of the Zone",
  *              @OA\Schema(
  *                 type="integer",
  *                 example=1,
- *                 minimum=1
+ *                  minimum=1
  *              ),
  *              in="query",
  *              required=true
  *      ),
- *
- *      @OA\Parameter(
- *              name="type_id",
- *              description="id of the type",
- *              @OA\Schema(
- *                 type="integer",
- *                 example=1,
- *                 minimum=1
- *              ),
- *              in="query",
- *              required=true
- *      ),
- *
  *      @OA\Parameter(
  *              name="name",
- *              description="Name of the box",
+ *              description="Name of the Position",
  *              @OA\Schema(
  *                 type="string",
- *                 example="Box Name"
+ *                 example="position Name"
  *              ),
  *              in="query",
  *              required=true
  *      ),
  *
- *      @OA\Parameter(
- *              name="batch",
- *              description="Batch of the box",
- *              @OA\Schema(
- *                 type="string",
- *                 example="batch string"
- *              ),
- *              in="query",
- *              required=true
- *      ),
  *
  *   @OA\Response(
  *      response=200,
- *      description="Box Created"
+ *      description="API position Created"
  *   ),
  * )
  *
  * @OA\get(
- *      path="/boxes/{id}",
- *      summary="Get a specific a Box",
- *      description="Get a specific Box",
- *      operationId="BoxesShow",
- *      tags={"Boxes"},
+ *      path="/positions/{id}",
+ *      summary="Get a specific position",
+ *      description="Get a specific position",
+ *      operationId="PositionsShow",
+ *      tags={"Positions"},
  *      security={{"bearerAuth":{}}},
  *      @OA\Parameter(
  *              name="id",
- *              description="ID of the Box",
+ *              description="ID of the Position",
  *              @OA\Schema(
  *                 type="integer",
- *                 example="1",
+ *                 example=1,
  *                  minimum=1
  *              ),
  *              in="path",
@@ -119,80 +93,76 @@ use Illuminate\Http\Request;
  *
  *   @OA\Response(
  *      response=200,
- *      description="Box object"
+ *      description="Position object"
  *   ),
  * )
  *
  * @OA\put(
- *      path="/boxes/{id}",
- *      summary="Update a Box",
- *      description="Update a Box",
- *      operationId="BoxesUpdate",
- *      tags={"Boxes"},
+ *      path="/positions/{id}",
+ *      summary="Update a Position",
+ *      description="Update a Position",
+ *      operationId="PositionsUpdate",
+ *      tags={"Positions"},
  *      security={{"bearerAuth":{}}},
- *
  *      @OA\Parameter(
- *              name="position_id",
- *              description="id of the Position",
+ *              name="id",
+ *              description="ID of the Position",
  *              @OA\Schema(
  *                 type="integer",
  *                 example=1,
- *                 minimum=1
+ *                  minimum=1
  *              ),
- *              in="query",
+ *              in="path",
  *              required=true
  *      ),
  *
  *      @OA\Parameter(
- *              name="type_id",
- *              description="id of the Type",
+ *              name="zone_id",
+ *              description="ID of the Zone",
  *              @OA\Schema(
  *                 type="integer",
  *                 example=1,
- *                 minimum=1
+ *                  minimum=1
  *              ),
  *              in="query",
  *              required=true
  *      ),
- *
  *      @OA\Parameter(
  *              name="name",
- *              description="Name of the Box",
+ *              description="Name of the Position",
  *              @OA\Schema(
  *                 type="string",
- *                 example="Box Name"
+ *                 example="position Name"
  *              ),
  *              in="query",
  *              required=true
  *      ),
- *
  *      @OA\Parameter(
- *              name="batch",
- *              description="Batch of the Box",
+ *              name="box_id",
+ *              description="ID of the Box",
  *              @OA\Schema(
- *                 type="string",
- *                 example="Batch string"
+ *                 type="integer",
+ *                  nullable=true,
  *              ),
+ *              required=false,
  *              in="query",
- *              required=true
  *      ),
-
  *   @OA\Response(
  *      response=200,
- *      description="Box updated"
+ *      description="Position updated"
  *   ),
  * )
  *
  * @OA\delete(
- *      path="/boxes/{id}",
- *      summary="Delete a Box",
- *      description="Delete a Box",
- *      operationId="BoxesDelete",
- *      tags={"Boxes"},
+ *      path="/positions/{id}",
+ *      summary="Delete a Position",
+ *      description="Delete a Position",
+ *      operationId="PositionsDelete",
+ *      tags={"Positions"},
  *      security={{"bearerAuth":{}}},
  *      @OA\Parameter(
  *              name="id",
- *              description="ID of the Box",
+ *              description="ID of the Position",
  *              @OA\Schema(
  *                 type="integer",
  *                 example=1,
@@ -204,20 +174,21 @@ use Illuminate\Http\Request;
  *
  *   @OA\Response(
  *      response=204,
- *      description="Box deleted"
+ *      description="API position deleted"
  *   ),
  * )
  *
+ *
  * @OA\delete(
- *      path="/boxes/{id}/force",
- *      summary="Permanently delete a Box",
- *      description="Permanently delete a Box",
- *      operationId="BoxesDeleteForce",
- *      tags={"Boxes"},
+ *      path="/positions/{id}/force",
+ *      summary="Permanently delete a Position",
+ *      description="Permanently delete a Position",
+ *      operationId="PositionsDeleteForce",
+ *      tags={"Positions"},
  *      security={{"bearerAuth":{}}},
  *      @OA\Parameter(
  *              name="id",
- *              description="ID of the Box",
+ *              description="ID of the Position",
  *              @OA\Schema(
  *                 type="integer",
  *                 example=1,
@@ -229,21 +200,21 @@ use Illuminate\Http\Request;
  *
  *   @OA\Response(
  *      response=204,
- *      description="Box permanently deleted"
+ *      description="Position permanently deleted"
  *   ),
  * )
  *
  * *
  * @OA\put(
- *      path="/boxes/{id}/restore",
- *      summary="Restore a deleted box",
- *      description="Restore a deleted box",
- *      operationId="BoxesRestore",
- *      tags={"Boxes"},
+ *      path="/positions/{id}/restore",
+ *      summary="Restore a deleted Position",
+ *      description="Restore a deleted Position",
+ *      operationId="PositionsRestore",
+ *      tags={"Positions"},
  *      security={{"bearerAuth":{}}},
  *      @OA\Parameter(
  *              name="id",
- *              description="ID of the Box",
+ *              description="ID of the Position",
  *              @OA\Schema(
  *                 type="integer",
  *                 example=1,
@@ -255,12 +226,12 @@ use Illuminate\Http\Request;
  *
  *   @OA\Response(
  *      response=200,
- *      description="Box restored"
+ *      description="Position restored"
  *   ),
  * )
  */
 
-class BoxController extends Controller
+class PositionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -270,14 +241,14 @@ class BoxController extends Controller
     public function index(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_viewAny')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_viewAny')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Box::orderBy('id','ASC')->get();
+        $data = Position::orderBy('id','ASC')->get();
         if(count($data) == 0){
-            return response()->json(['besked' => 'Ingen Kasser'], 404);
+            return response()->json(['besked' => 'Ingen Positioner'], 404);
         }
 
         return response()->json($data,200);
@@ -291,14 +262,14 @@ class BoxController extends Controller
     public function deleted(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_viewAny_deleted')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_viewAny_deleted')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Box::onlyTrashed()->orderBy('id','ASC')->get();
+        $data = Position::onlyTrashed()->orderBy('id','ASC')->get();
         if(count($data) == 0){
-            return response()->json(['besked' => 'Ingen Slettede Kasser'], 404);
+            return response()->json(['besked' => 'Ingen Slettede Positionr'], 404);
         }
 
         return response()->json($data,200);
@@ -313,26 +284,24 @@ class BoxController extends Controller
     public function store(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_create')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_create')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
-        $type = Type::where('id','=',$request->type_id)->first();
 
-        $data = (new Box());
-        $data->name = $request->name;
-        $data->position_id = $request->position_id;
-        $data->type_id = $request->type_id;
-        $data->batch = $request->batch;
-        $data->expires_at = now()->addDays($type->shelf_life);
+        $data = (new Position());
+
+        if(isset($request->name)){
+            $data->name = $request->name;
+        }
+
+        if(isset($request->zone_id)){
+            $data->zone_id = $request->zone_id;
+        }
 
         $data->save();
 
-        $position = Position::where('id','=',$request->position_id)->first();
-        $position->box_id = $data->id;
-        $position->save();
-
-        response()->json(['besked' => 'Kasse oprettet med id: '.$data->id], 201);
+        response()->json(['besked' => 'Position oprettet med id: '.$data->id], 201);
     }
 
     /**
@@ -343,14 +312,14 @@ class BoxController extends Controller
     public function show(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_view')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_view')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Box::where('id','=',$id)->first();
+        $data = Position::where('id','=',$id)->first();
         if(!$data){
-            return response()->json(['besked' => 'Kasse ikke fundet'], 404);
+            return response()->json(['besked' => 'Position ikke fundet'], 404);
         }
 
         return response()->json($data,200);
@@ -365,39 +334,30 @@ class BoxController extends Controller
     public function update(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_edit')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_edit')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Box::where('id','=',$id)->first();
+        $data = Position::where('id','=',$id)->first();
         if(!$data){
-            return response()->json(['besked' => 'Kasse ikke fundet'], 404);
+            return response()->json(['besked' => 'Position ikke fundet'], 404);
         }
 
         if(isset($request->name)){
             $data->name = $request->name;
         }
 
-        if(isset($request->shelf_id)){
-            $data->shelf_id = $request->shelf_id;
+        if(isset($request->zone_id)){
+            $data->zone_id = $request->zone_id;
         }
 
-        if(isset($request->type_id)){
-            $data->type_id = $request->type_id;
-        }
 
-        if(isset($request->batch)){
-            $data->batch = $request->batch;
-        }
+        $data->box_id = $request->box_id ?? null;
 
         $data->save();
 
-        $position = Position::where('id','=',$request->position_id)->first();
-        $position->box_id = $data->id;
-        $position->save();
-
-        response()->json(['besked' => 'Kasse opdateret'], 200);
+        response()->json(['besked' => 'Position opdateret'], 200);
     }
 
     /**
@@ -408,19 +368,19 @@ class BoxController extends Controller
     public function destroy(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_delete')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_delete')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Box::where('id','=',$id)->first();
+        $data = Position::where('id','=',$id)->first();
         if(!$data){
-            return response()->json(['besked' => 'Kasse ikke fundet'], 404);
+            return response()->json(['besked' => 'Position ikke fundet'], 404);
         }
 
         $data->delete();
 
-        response()->json(['besked' => 'Kasse slettet'],204);
+        response()->json(['besked' => 'Position slettet'],204);
     }
 
     /**
@@ -431,41 +391,41 @@ class BoxController extends Controller
     public function delete_force(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_delete_force')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_delete_force')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Box::onlyTrashed()->where('id','=',$id)->first();
+        $data = Position::onlyTrashed()->where('id','=',$id)->first();
         if(!$data){
-            return response()->json(['besked' => 'Kasse ikke fundet'], 404);
+            return response()->json(['besked' => 'Position ikke fundet'], 404);
         }
 
         $data->forceDelete();
 
-        response()->json(['besked' => 'Kasse permanent slettet'],204);
+        response()->json(['besked' => 'Position permanent slettet'],204);
     }
 
     /**
      * Restore the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function restore(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_restore')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_restore')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Box::withTrashed()->where('id','=',$id)->first();
+        $data = Position::withTrashed()->where('id','=',$id)->first();
         if(!$data){
-            return response()->json(['besked' => 'Kasse ikke fundet'], 404);
+            return response()->json(['besked' => 'Position ikke fundet'], 404);
         }
 
         $data->restore();
 
-        response()->json(['besked' => 'Kasse genoprettet'], 200);
+        response()->json(['besked' => 'Position genoprettet'], 200);
     }
 }

@@ -7,6 +7,311 @@ use App\Models\Permission;
 use App\Models\ZoneLog;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\get(
+ *      path="/zoneLogs",
+ *      summary="Get a list of Zone Logs",
+ *      description="Get a list of Zone Logs",
+ *      operationId="ZoneLogsList",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="List of Zone Logs"
+ *   ),
+ * )
+ *
+ * * @OA\get(
+ *      path="/zoneLogs/deleted",
+ *      summary="Get a list of deleted Zone Logs",
+ *      description="Get a list of deleted Zone Logs",
+ *      operationId="ZoneLogsListDeleted",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="List of deleted Zone Logs"
+ *   ),
+ * )
+ *
+ * @OA\get(
+ *      path="/zoneLogs/zone/{id}",
+ *      summary="Get a specific Zone's logs",
+ *      description="Get a specific Zone's logs",
+ *      operationId="ZoneLogsZone",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone Log",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Zone Log object"
+ *   ),
+ * )
+ *
+ * @OA\post(
+ *      path="/zoneLogs",
+ *      summary="Create an Zone Log",
+ *      description="Create an Zone Log",
+ *      operationId="ZoneLogsCreate",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="zone_id",
+ *              description="ID of the Zone",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="log_action_id",
+ *              description="ID of the Action",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="temperature",
+ *              description="Temperature",
+ *              @OA\Schema(
+ *                 type="number",
+ *                 example="14.2",
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="humidity",
+ *              description="Humidity",
+ *              @OA\Schema(
+ *                 type="number",
+ *                 example="60",
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="alarm",
+ *              description="Alarm Triggered",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=0,
+ *                  minimum=0,
+ *                  maximum=1
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Zone Log created"
+ *   ),
+ * )
+ *
+ * @OA\get(
+ *      path="/zoneLogs/{id}",
+ *      summary="Get a specific Zone Log",
+ *      description="Get a specific Zone Log",
+ *      operationId="ZoneLogsShow",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone Log",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Zone Log object"
+ *   ),
+ * )
+ *
+ * @OA\put(
+ *      path="/zoneLogs/{id}",
+ *      summary="Update an Zone Log",
+ *      description="Update an Zone Log",
+ *      operationId="ZoneLogsUpdate",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone Log",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *       @OA\Parameter(
+ *              name="zone_id",
+ *              description="ID of the Zone",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="log_action_id",
+ *              description="ID of the Action",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="temperature",
+ *              description="Temperature",
+ *              @OA\Schema(
+ *                 type="number",
+ *                 example="14.2",
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="humidity",
+ *              description="Humidity",
+ *              @OA\Schema(
+ *                 type="number",
+ *                 example="60",
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *      @OA\Parameter(
+ *              name="alarm",
+ *              description="Alarm Triggered",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=0,
+ *                  minimum=0,
+ *                  maximum=1
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+
+ *   @OA\Response(
+ *      response=200,
+ *      description="Zone Log updated"
+ *   ),
+ * )
+ *
+ * @OA\delete(
+ *      path="/zoneLogs/{id}",
+ *      summary="Delete an Zone Log",
+ *      description="Delete an Zone Log",
+ *      operationId="ZoneLogsDelete",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone Log",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=204,
+ *      description="Zone Log deleted"
+ *   ),
+ * )
+ *
+ *
+ * @OA\delete(
+ *      path="/zoneLogs/{id}/force",
+ *      summary="Permanently Delete an Zone Log",
+ *      description="Permanently Delete an Zone Log",
+ *      operationId="ZoneLogsDeleteForce",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone Log",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=204,
+ *      description="Zone Log permanently deleted"
+ *   ),
+ * )
+ *
+ * *
+ * @OA\put(
+ *      path="/zoneLogs/{id}/restore",
+ *      summary="Restore a deleted Zone Log",
+ *      description="Restore a deleted Zone Log",
+ *      operationId="ZoneLogsRestore",
+ *      tags={"Zone Logs"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone Log",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Zone Log restored"
+ *   ),
+ * )
+ */
+
 class ZoneLogController extends Controller
 {
     /**
@@ -17,17 +322,18 @@ class ZoneLogController extends Controller
     public function index(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zoneLogs_viewAny')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_viewAny')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = ZoneLog::orderBy('id','ASC')->get();
+        $data = ZoneLog::orderBy('id','ASC')
+            ->get();
         if(count($data) == 0){
-            return response('Ingen Zone Logs', 404);
+            return response()->json(['besked' => 'Ingen Zone Logs'], 404);
         }
 
-        return response()->json($data);
+        return response()->json($data,200);
     }
 
     /**
@@ -38,50 +344,60 @@ class ZoneLogController extends Controller
     public function deleted(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zoneLogs_viewAny_deleted')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_viewAny_deleted')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = ZoneLog::onlyTrashed()->orderBy('id','ASC')->get();
+        $data = ZoneLog::onlyTrashed()
+            ->orderBy('id','ASC')
+            ->get();
         if(count($data) == 0){
-            return response('Ingen Slettede Zone Logs', 404);
+            return response()->json(['besked' => 'Ingen Slettede Zone Logs'], 404);
         }
 
-        return response()->json($data);
+        return response()->json($data,200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zoneLogs_create')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_create')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = (new ZoneLog());
 
-        if(isset($request->data)){
-            $data->data = $request->data;
+        if(isset($request->temperature)){
+            $data->temperature = $request->temperature;
         }
 
-        if(isset($request->user_id)){
-            $data->user_id = $request->user_id;
+        if(isset($request->humidity)){
+            $data->humidity = $request->humidity;
+        }
+
+        if(isset($request->alarm)){
+            $data->alarm = $request->alarm;
         }
 
         if(isset($request->log_action_id)){
             $data->log_action_id = $request->log_action_id;
         }
 
+        if(isset($request->zone_id)){
+            $data->zone_id = $request->zone_id;
+        }
+
         $data->save();
 
-        return response('Zone Log oprettet med id: '.$data->id , 201);
+        response()->json(['besked' => 'Zone Log oprettet med id: '.$data->id], 201);
     }
 
     /**
@@ -92,44 +408,79 @@ class ZoneLogController extends Controller
     public function show(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zoneLogs_view')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_view')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = ZoneLog::where('id','=',$id)->first();
+        $data = ZoneLog::where('id','=',$id)
+            ->first();
+
         if(!$data){
-            return response('Zone Log ikke fundet', 404);
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
         }
 
-        return response()->json($data);
+        return response()->json($data,200);
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function zone(Request $request, $id)
+    {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_view')))
+        {
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
+        }
+
+        $data = ZoneLog::where('zone_id','=',$id)
+            ->orderby('created_at', 'desc')
+            ->get();
+
+        if(!$data){
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
+        }
+
+        return response()->json($data,200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zoneLogs_edit')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_edit')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = ZoneLog::where('id','=',$id)->first();
         if(!$data){
-            return response('Zone Log ikke fundet', 404);
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
         }
 
         if(isset($request->data)){
-            $data->data = $request->data;
+            $data->temperature = $request->temperature;
         }
 
-        if(isset($request->user_id)){
-            $data->user_id = $request->user_id;
+        if(isset($request->data)){
+            $data->humidity = $request->humidity;
+        }
+
+        if(isset($request->data)){
+            $data->alarm = $request->alarm;
+        }
+
+        if(isset($request->log_action_id)){
+            $data->log_action_id = $request->log_action_id;
         }
 
         if(isset($request->log_action_id)){
@@ -138,75 +489,75 @@ class ZoneLogController extends Controller
 
         $data->save();
 
-        return response('Zone Log opdateret', 200);
+        response()->json(['besked' => 'Zone Log opdateret'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zoneLogs_delete')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_delete')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = ZoneLog::where('id','=',$id)->first();
         if(!$data){
-            return response('Zone Log ikke fundet', 404);
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
         }
 
         $data->delete();
 
-        return response('Zone Log slettet', 204);
+        response()->json(['besked' => 'Zone Log slettet'],204);
     }
 
     /**
      * Permanently Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function delete_force(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zoneLogs_delete_force')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_delete_force')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = ZoneLog::onlyTrashed()->where('id','=',$id)->first();
         if(!$data){
-            return response('Zone Log ikke fundet', 404);
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
         }
 
         $data->forceDelete();
 
-        return response('Zone Log permanent slettet', 204);
+        response()->json(['besked' => 'Zone Log permanent slettet'],204);
     }
 
     /**
      * Restore the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function restore(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zoneLogs_restore')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_restore')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = ZoneLog::withTrashed()->where('id','=',$id)->first();
         if(!$data){
-            return response('Zone Log ikke fundet', 404);
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
         }
 
         $data->restore();
 
-        return response('Zone Log genoprettet', 200);
+        response()->json(['besked' => 'Zone Log genoprettet'], 200);
     }
 }

@@ -6,6 +6,48 @@ use App\Models\Apitoken;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\get(
+ *      path="/permissions",
+ *      summary="Get a list of permissions",
+ *      description="Get a list of permissions",
+ *      operationId="PermissionsList",
+ *      tags={"Permissions"},
+ *      security={{"bearerAuth":{}}},
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="List of Permissions"
+ *   ),
+ * )
+ *
+ * @OA\get(
+ *      path="/permissions/{id}",
+ *      summary="Get a specific  an permission",
+ *      description="Get a specific permission",
+ *      operationId="PermissionsShow",
+ *      tags={"Permissions"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the permission",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Permission object"
+ *   ),
+ * )
+ *
+ */
+
 class PermissionController extends Controller
 {
     /**
@@ -18,47 +60,14 @@ class PermissionController extends Controller
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'permissions_viewAny')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = Permission::orderBy('id','ASC')->get();
         if(count($data) == 0){
-            return response('Ingen Permissions', 404);
+            return response()->json(['besked' => 'Ingen Permissions'], 404);
         }
-        return response()->json($data);
-    }
-
-    /**
-     * Display a listing of the deleted resource.
-     *
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
-     */
-    public function deleted(Request $request)
-    {
-        $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'permissions_viewAny_deleted')))
-        {
-            return response('Du har ikke de fornødne tilladelser', 403);
-        }
-
-        return response('Ingen Funktionalitet', 404);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'permissions_create')))
-        {
-            return response('Du har ikke de fornødne tilladelser', 403);
-        }
-
-        return response('Ingen Funktionalitet', 404);
+        return response()->json($data,200);
     }
 
     /**
@@ -71,78 +80,14 @@ class PermissionController extends Controller
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'permissions_view')))
         {
-            return response('Du har ikke de fornødne tilladelser', 403);
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
         $data = Permission::where('id','=',$id)->first();
         if(!$data){
-            return response('Kasse Log ikke fundet', 404);
+            return response()->json(['besked' => 'Kasse Log ikke fundet'], 404);
         }
 
-        return response()->json($data);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
-    {
-        $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'permissions_edit')))
-        {
-            return response('Du har ikke de fornødne tilladelser', 403);
-        }
-
-        return response('Ingen Funktionalitet', 404);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
-    {
-        $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'permissions_delete')))
-        {
-            return response('Du har ikke de fornødne tilladelser', 403);
-        }
-
-        return response('Ingen Funktionalitet', 404);
-    }
-    /**
-     * Permanently Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function delete_force(Request $request, $id)
-    {
-        $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'permissions_delete_force')))
-        {
-            return response('Du har ikke de fornødne tilladelser', 403);
-        }
-
-        return response('Ingen Funktionalitet', 404);
-    }
-
-    /**
-     * Restore the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function restore(Request $request, $id)
-    {
-        $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'permissions_restore')))
-        {
-            return response('Du har ikke de fornødne tilladelser', 403);
-        }
-
-        return response('Ingen Funktionalitet', 404);
+        return response()->json($data,200);
     }
 }

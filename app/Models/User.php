@@ -35,6 +35,10 @@ class User extends Authenticatable
         'role_id'
     ];
 
+    protected $appends = [
+        'role'
+    ];
+
     /**
      * The attributes that should be cast.
      *
@@ -54,11 +58,16 @@ class User extends Authenticatable
 
     public function logs()
     {
-        return $this->belongsTo(Role::class);
+        return $this->hasMany(Log::class);
     }
 
     public function box_logs()
     {
         return $this->hasMany(Boxlog::class);
+    }
+
+    public function getroleAttribute()
+    {
+        return $this->role()->first();
     }
 }
