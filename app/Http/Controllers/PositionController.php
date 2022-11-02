@@ -73,6 +73,70 @@ use Illuminate\Http\Request;
  * )
  *
  * @OA\get(
+ *      path="/positions/empty",
+ *      summary="Get a list of empty Positions",
+ *      description="Get a list of empty Positions",
+ *      operationId="PositionsEmpty",
+ *      tags={"Positions"},
+ *      security={{"bearerAuth":{}}},
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="List of empty Positions"
+ *   ),
+ * )
+ *
+ * @OA\get(
+ *      path="/positions/zone/{id}",
+ *      summary="Get a specific zone's positions",
+ *      description="Get a specific zone's positions",
+ *      operationId="PositionsZone",
+ *      tags={"Positions"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Position object"
+ *   ),
+ * )
+ *
+ * @OA\get(
+ *      path="/positions/zone/{id}/empty",
+ *      summary="Get a specific zone's empty position",
+ *      description="Get a specific zone's empty position",
+ *      operationId="PositionsZoneEmpty",
+ *      tags={"Positions"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Position object"
+ *   ),
+ * )
+ *
+ * @OA\get(
  *      path="/positions/{id}",
  *      summary="Get a specific position",
  *      description="Get a specific position",
@@ -352,7 +416,6 @@ class PositionController extends Controller
             $data->zone_id = $request->zone_id;
         }
 
-
         $data->box_id = $request->box_id ?? null;
 
         $data->save();
@@ -427,5 +490,79 @@ class PositionController extends Controller
         $data->restore();
 
         response()->json(['besked' => 'Position genoprettet'], 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function zone(Request $request, $id)
+    {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_view')))
+        {
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
+        }
+
+        $data = Position::where('zone_id','=',$id)
+            ->orderby('created_at', 'desc')
+            ->get();
+
+        if(!$data){
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
+        }
+
+        return response()->json($data,200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function empty(Request $request)
+    {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_view')))
+        {
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
+        }
+
+        $data = Position::where('box_id','=',Null)
+            ->orderby('created_at', 'desc')
+            ->get();
+
+        if(!$data){
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
+        }
+
+        return response()->json($data,200);
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function zone_empty(Request $request, $id)
+    {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_view')))
+        {
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
+        }
+
+        $data = Position::where('zone_id','=',$id)
+            ->where('box_id','=',Null)
+            ->orderby('created_at', 'desc')
+            ->get();
+
+        if(!$data){
+            return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
+        }
+
+        return response()->json($data,200);
     }
 }

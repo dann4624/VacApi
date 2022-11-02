@@ -467,15 +467,15 @@ class ZoneLogController extends Controller
             return response()->json(['besked' => 'Zone Log ikke fundet'], 404);
         }
 
-        if(isset($request->data)){
+        if(isset($request->temperature)){
             $data->temperature = $request->temperature;
         }
 
-        if(isset($request->data)){
+        if(isset($request->humidity)){
             $data->humidity = $request->humidity;
         }
 
-        if(isset($request->data)){
+        if(isset($request->alarm)){
             $data->alarm = $request->alarm;
         }
 
@@ -483,8 +483,8 @@ class ZoneLogController extends Controller
             $data->log_action_id = $request->log_action_id;
         }
 
-        if(isset($request->log_action_id)){
-            $data->log_action_id = $request->log_action_id;
+        if(isset($request->zone_id)){
+            $data->zone_id = $request->zone_id;
         }
 
         $data->save();

@@ -266,6 +266,43 @@ use Illuminate\Support\Facades\Mail;
  *   ),
  * )
  *
+ *
+ * @OA\put(
+ *      path="/zones/{id}/types",
+ *      summary="Update Types for Zone",
+ *      description="Update Types for Zone",
+ *      operationId="ZonesTypes",
+ *      tags={"Zones"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="ID of the Zone",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                  minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *      @OA\Parameter(
+ *              name="types[]",
+ *              description="Array of Type IDs",
+ *              @OA\Schema(
+ *                 type="array",
+ *                  @OA\Items(type="integer"),
+ *              ),
+ *              in="query",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Zone restored"
+ *   ),
+ * )
+ *
  * @OA\Post(
  *      path="/authenticate/zone",
  *      summary="Get API Key for Zone-controller by authenticating with a valid user",
@@ -498,6 +535,30 @@ class ZoneController extends Controller
     }
 
     /**
+     * Update Types
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function types(Request $request, $id)
+    {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'zones_edit')))
+        {
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
+        }
+
+        $data = Zone::where('id','=',$id)->first();
+        if(!$data){
+            return response()->json(['besked' => 'Zone ikke fundet'], 404);
+        }
+
+        $types = $request->types;
+        $data->types()->sync($types);
+
+        response()->json(['besked' => 'Typer opdateret'], 200);
+    }
+
+    /**
      * Authenticate the user.
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
@@ -576,4 +637,5 @@ class ZoneController extends Controller
 
         return new NotificationMail($zone,$type,$temperature,$humidity,$my_message);
     }
+
 }

@@ -154,6 +154,7 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::put('/zones/{id}', [ZoneController::class, 'update']);
     Route::get('/zones/{id}', [ZoneController::class, 'show']);
     Route::post('/zones/{id}/notify', [ZoneController::class, 'notify']);
+    Route::put('/zones/{id}/types', [ZoneController::class, 'types']);
     Route::delete('/zones/{id}', [ZoneController::class, 'destroy']);
     Route::delete('/zones/{id}/force', [ZoneController::class, 'delete_force']);
     Route::put('/zones/{id}/restore', [ZoneController::class, 'restore']);
@@ -177,6 +178,9 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::get('/positions', [PositionController::class, 'index']);
     Route::get('/positions/deleted', [PositionController::class, 'deleted']);
     Route::post('/positions', [PositionController::class, 'store']);
+    Route::get('/positions/empty', [PositionController::class, 'empty']);
+    Route::get('/positions/zone/{id}', [PositionController::class, 'zone']);
+    Route::get('/positions/zone/{id}/empty', [PositionController::class, 'zone_empty']);
     Route::put('/positions/{id}', [PositionController::class, 'update']);
     Route::get('/positions/{id}', [PositionController::class, 'show']);
     Route::delete('/positions/{id}', [PositionController::class, 'destroy']);

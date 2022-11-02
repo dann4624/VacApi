@@ -311,7 +311,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, $ID)
+    public function show(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'roles_view')))
@@ -319,7 +319,7 @@ class RoleController extends Controller
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Role::where('ID','=',$ID)->first();
+        $data = Role::where('id','=',$id)->first();
         if(!$data){
             return response()->json(['besked' => 'Rolle ikke fundet'], 404);
         }
@@ -333,7 +333,7 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $ID)
+    public function update(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'roles_edit')))
@@ -341,7 +341,7 @@ class RoleController extends Controller
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Role::where('ID','=',$ID)->first();
+        $data = Role::where('id','=',$id)->first();
         if(!$data){
             return response()->json(['besked' => 'Rolle ikke fundet'], 404);
         }
@@ -360,7 +360,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $ID)
+    public function destroy(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'roles_delete')))
@@ -368,7 +368,7 @@ class RoleController extends Controller
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Role::where('ID','=',$ID)->first();
+        $data = Role::where('id','=',$id)->first();
         if(!$data){
             return response()->json(['besked' => 'Rolle ikke fundet'], 404);
         }
@@ -383,7 +383,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function delete_force(Request $request, $ID)
+    public function delete_force(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'roles_delete_force')))
@@ -391,7 +391,7 @@ class RoleController extends Controller
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Role::onlyTrashed()->where('ID','=',$ID)->first();
+        $data = Role::onlyTrashed()->where('id','=',$id)->first();
         if(!$data){
             return response()->json(['besked' => 'Rolle ikke fundet'], 404);
         }
@@ -406,7 +406,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function restore(Request $request, $ID)
+    public function restore(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'roles_restore')))
@@ -414,7 +414,7 @@ class RoleController extends Controller
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Role::withTrashed()->where('ID','=',$ID)->first();
+        $data = Role::withTrashed()->where('id','=',$id)->first();
         if(!$data){
             return response()->json(['besked' => 'Rolle ikke fundet'], 404);
         }
@@ -429,7 +429,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function permissions(Request $request, $ID)
+    public function permissions(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
         if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'roles_edit_permissions')))
@@ -437,7 +437,7 @@ class RoleController extends Controller
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
 
-        $data = Role::where('ID','=',$ID)->first();
+        $data = Role::where('id','=',$id)->first();
         if(!$data){
             return response()->json(['besked' => 'Rolle ikke fundet'], 404);
         }
