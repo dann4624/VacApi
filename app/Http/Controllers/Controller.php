@@ -10,16 +10,16 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(
- *     description="CoronaMecca API.",
+ *     description="Cool Corona API.",
  *     version="1.0.0",
- *     title="CoronaMecca API",
+ *     title="Cool Corona API",
  *     @OA\Contact(
  *         email="dann4624@edu.sde.dk"
  *     ),
  *
  * )
  *   @OA\Server(
- *         url="http://vacapi/api"
+ *         url="https://vacapi.semeicardia.online/api"
  *     )
  * @OA\PathItem(path="/api/")
  * @OA\SecurityScheme(

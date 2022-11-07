@@ -7,5 +7,6 @@
     </head>
     <body>
         Ingen Browser Adgang.
+        {{now()}}
     </body>
 </html>

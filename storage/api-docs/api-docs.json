@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "CoronaMecca API",
-        "description": "CoronaMecca API.",
+        "title": "Cool Corona API",
+        "description": "Cool Corona API.",
         "contact": {
             "email": "dann4624@edu.sde.dk"
         },
@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "http://vacapi/api"
+            "url": "https://vacapi.semeicardia.online/api"
         }
     ],
     "paths": {
@@ -790,10 +790,21 @@
                 "operationId": "BoxesUpdate",
                 "parameters": [
                     {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
                         "name": "position_id",
                         "in": "query",
                         "description": "id of the Position",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer",
                             "minimum": 1,
@@ -804,7 +815,7 @@
                         "name": "type_id",
                         "in": "query",
                         "description": "id of the Type",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer",
                             "minimum": 1,
@@ -815,7 +826,7 @@
                         "name": "name",
                         "in": "query",
                         "description": "Name of the Box",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "example": "Box Name"
@@ -825,7 +836,7 @@
                         "name": "batch",
                         "in": "query",
                         "description": "Batch of the Box",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "example": "Batch string"
@@ -866,6 +877,38 @@
                 "responses": {
                     "204": {
                         "description": "Box deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/boxes/name/{name}": {
+            "get": {
+                "tags": [
+                    "Boxes"
+                ],
+                "summary": "Get a specific a Box by Name",
+                "description": "Get a specific Box by Name",
+                "operationId": "BoxesShowByName",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "Name of the Box",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "15"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Box object"
                     }
                 },
                 "security": [

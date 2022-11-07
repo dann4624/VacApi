@@ -305,7 +305,7 @@ class PositionController extends Controller
     public function index(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_viewAny')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_viewAny')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -326,7 +326,7 @@ class PositionController extends Controller
     public function deleted(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_viewAny_deleted')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_viewAny_deleted')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -348,7 +348,7 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_create')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_create')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -376,7 +376,7 @@ class PositionController extends Controller
     public function show(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_view')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_view')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -398,7 +398,7 @@ class PositionController extends Controller
     public function update(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_edit')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_edit')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -431,7 +431,7 @@ class PositionController extends Controller
     public function destroy(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_delete')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_delete')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -454,7 +454,7 @@ class PositionController extends Controller
     public function delete_force(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_delete_force')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_delete_force')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -477,7 +477,7 @@ class PositionController extends Controller
     public function restore(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'Positions_restore')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_restore')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -500,7 +500,7 @@ class PositionController extends Controller
     public function zone(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_view')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_view')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -524,7 +524,7 @@ class PositionController extends Controller
     public function empty(Request $request)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_view')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_view')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }
@@ -549,7 +549,7 @@ class PositionController extends Controller
     public function zone_empty(Request $request, $id)
     {
         $token = Apitoken::where('token','=',$request->bearerToken())->first();
-        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'ZoneLogs_view')))
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'positions_view')))
         {
             return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
         }

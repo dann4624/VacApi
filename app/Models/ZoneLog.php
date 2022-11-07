@@ -28,12 +28,6 @@ class ZoneLog extends Model
         "log_action",
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
-        'updated_at' => 'datetime:d-m-Y H:i:s',
-        'deleted_at' => 'datetime:d-m-Y H:i:s',
-    ];
-
     public function zone()
     {
         return $this->belongsTo(Zone::class);

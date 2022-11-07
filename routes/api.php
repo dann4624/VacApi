@@ -195,6 +195,7 @@ Route::group(['middleware' => 'api_token'], function() {
     Route::post('/boxes', [BoxController::class, 'store']);
     Route::put('/boxes/{id}', [BoxController::class, 'update']);
     Route::get('/boxes/{id}', [BoxController::class, 'show']);
+    Route::get('/boxes/name/{name}', [BoxController::class, 'by_name']);
     Route::get('/boxes/{id}/logs', [BoxController::class, 'logs']);
     Route::delete('/boxes/{id}', [BoxController::class, 'destroy']);
     Route::delete('/boxes/{id}/force', [BoxController::class, 'delete_force']);

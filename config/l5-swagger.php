@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'CoronaMecca Api',
+                'title' => 'Cool Corona Api',
             ],
 
             'routes' => [

@@ -123,6 +123,30 @@ use Illuminate\Http\Request;
  *   ),
  * )
  *
+ * @OA\get(
+ *      path="/boxes/name/{name}",
+ *      summary="Get a specific a Box by Name",
+ *      description="Get a specific Box by Name",
+ *      operationId="BoxesShowByName",
+ *      tags={"Boxes"},
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Parameter(
+ *              name="name",
+ *              description="Name of the Box",
+ *              @OA\Schema(
+ *                 type="string",
+ *                 example="15",
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
+ *
+ *   @OA\Response(
+ *      response=200,
+ *      description="Box object"
+ *   ),
+ * )
+ *
  * @OA\put(
  *      path="/boxes/{id}",
  *      summary="Update a Box",
@@ -130,6 +154,18 @@ use Illuminate\Http\Request;
  *      operationId="BoxesUpdate",
  *      tags={"Boxes"},
  *      security={{"bearerAuth":{}}},
+ *
+ *      @OA\Parameter(
+ *              name="id",
+ *              description="id of the Box",
+ *              @OA\Schema(
+ *                 type="integer",
+ *                 example=1,
+ *                 minimum=1
+ *              ),
+ *              in="path",
+ *              required=true
+ *      ),
  *
  *      @OA\Parameter(
  *              name="position_id",
@@ -140,7 +176,7 @@ use Illuminate\Http\Request;
  *                 minimum=1
  *              ),
  *              in="query",
- *              required=true
+ *              required=false
  *      ),
  *
  *      @OA\Parameter(
@@ -152,7 +188,7 @@ use Illuminate\Http\Request;
  *                 minimum=1
  *              ),
  *              in="query",
- *              required=true
+ *              required=false
  *      ),
  *
  *      @OA\Parameter(
@@ -163,7 +199,7 @@ use Illuminate\Http\Request;
  *                 example="Box Name"
  *              ),
  *              in="query",
- *              required=true
+ *              required=false
  *      ),
  *
  *      @OA\Parameter(
@@ -174,7 +210,7 @@ use Illuminate\Http\Request;
  *                 example="Batch string"
  *              ),
  *              in="query",
- *              required=true
+ *              required=false
  *      ),
 
  *   @OA\Response(
@@ -356,6 +392,28 @@ class BoxController extends Controller
         return response()->json($data,200);
     }
 
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function by_name(Request $request, $name)
+    {
+        $token = Apitoken::where('token','=',$request->bearerToken())->first();
+        if(!$token->role->permissions->contains(Permission::firstWhere('name', '=', 'boxes_view')))
+        {
+            return response()->json(['besked' => 'Du har ikke de fornødne tilladelser'], 403);
+        }
+
+        $data = Box::where('name','=',$name)->first();
+        if(!$data){
+            return response()->json(['besked' => 'Kasse ikke fundet'], 404);
+        }
+
+        return response()->json($data,200);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -379,8 +437,8 @@ class BoxController extends Controller
             $data->name = $request->name;
         }
 
-        if(isset($request->shelf_id)){
-            $data->shelf_id = $request->shelf_id;
+        if(isset($request->position_id)){
+            $data->position_id = $request->position_id;
         }
 
         if(isset($request->type_id)){
@@ -393,9 +451,11 @@ class BoxController extends Controller
 
         $data->save();
 
-        $position = Position::where('id','=',$request->position_id)->first();
-        $position->box_id = $data->id;
-        $position->save();
+        if(isset($request->position_id)) {
+            $position = Position::where('id', '=', $request->position_id)->first();
+            $position->box_id = $id;
+            $position->save();
+        }
 
         response()->json(['besked' => 'Kasse opdateret'], 200);
     }
