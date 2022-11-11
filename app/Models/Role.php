@@ -20,12 +20,6 @@ class Role extends Model
         'permissions'
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
-        'updated_at' => 'datetime:d-m-Y H:i:s',
-        'deleted_at' => 'datetime:d-m-Y H:i:s',
-    ];
-
     /**
      * Gets all the Permissions with a relation with the roles(Many to Many through role_has_permission)
      * @return BelongsToMany

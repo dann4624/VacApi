@@ -16,10 +16,4 @@ class Type extends Model
         "minimum_temperature",
         "maximum_temperature",
     ];
-
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
-        'updated_at' => 'datetime:d-m-Y H:i:s',
-        'deleted_at' => 'datetime:d-m-Y H:i:s',
-    ];
 }

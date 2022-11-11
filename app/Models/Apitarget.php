@@ -15,10 +15,4 @@ class Apitarget extends Model
     protected $fillable = [
         "name",
     ];
-
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
-        'updated_at' => 'datetime:d-m-Y H:i:s',
-        'deleted_at' => 'datetime:d-m-Y H:i:s',
-    ];
 }

@@ -27,13 +27,6 @@ class Apitoken extends Model
         'role'
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
-        'updated_at' => 'datetime:d-m-Y H:i:s',
-        'deleted_at' => 'datetime:d-m-Y H:i:s',
-        'expires_at' => 'datetime:d-m-Y H:i:s',
-    ];
-
     public function role()
     {
         return $this->belongsTo(Role::class);

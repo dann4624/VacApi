@@ -26,12 +26,6 @@ class Position extends Model
         "box"
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
-        'updated_at' => 'datetime:d-m-Y H:i:s',
-        'deleted_at' => 'datetime:d-m-Y H:i:s',
-    ];
-
     public function box()
     {
         return $this->belongsTo(Box::class);

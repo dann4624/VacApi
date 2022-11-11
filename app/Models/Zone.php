@@ -22,12 +22,6 @@ class Zone extends Model
         'latest_log'
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
-        'updated_at' => 'datetime:d-m-Y H:i:s',
-        'deleted_at' => 'datetime:d-m-Y H:i:s',
-    ];
-
     /*
      * Relationer til andre Modeller / Tabeller
      */

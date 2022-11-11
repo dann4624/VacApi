@@ -34,12 +34,6 @@ class BoxLog extends Model
         "position",
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i:s',
-        'updated_at' => 'datetime:d-m-Y H:i:s',
-        'deleted_at' => 'datetime:d-m-Y H:i:s',
-    ];
-
     public function user()
     {
         return $this->belongsTo(User::class);
